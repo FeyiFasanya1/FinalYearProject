@@ -11,9 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.app.Adapter.CartAdapter;
+import com.example.app.Domain.ItemsDomain;
+import com.example.app.Domain.OrderRepository;
 import com.example.app.Helper.ChangeNumberItemsListener;
 import com.example.app.Helper.ManagmentCart;
 import com.example.app.databinding.ActivityCartBinding;
+import com.example.app.model.OrderInfo;
+import com.example.app.model.ProductInfo;
+import com.google.gson.Gson;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -23,6 +28,7 @@ import com.github.kittinunf.fuel.core.Handler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +53,8 @@ public class CartActivity extends BaseActivity {
 
     private ManagmentCart managmentCart;
 
+    private OrderRepository orderRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,7 @@ public class CartActivity extends BaseActivity {
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
 
         managmentCart = new ManagmentCart(this);
+        orderRepository = new OrderRepository();
 
         calculatorCart();
         setVarialbe();
@@ -127,8 +136,9 @@ public class CartActivity extends BaseActivity {
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             // Display for example, an order confirmation screen
             Log.d(TAG, "Completed");
+            uploadData();
             Toast.makeText(this, "Payment is successful", Toast.LENGTH_SHORT).show();
-            launchEmail();
+
         }
     }
 
@@ -146,9 +156,21 @@ public class CartActivity extends BaseActivity {
         binding.totalTxt.setText("€" + total);
     }
 
-    private void launchEmail() {
+    private void launchEmail(String orderNumber) {
 
-        Fuel.INSTANCE.post(EMAIL_URL + "email=", null)
+        List<Pair<String, String>> templateArgs = new ArrayList<>();
+        Pair<String,String> orderArgs = new Pair("orderNumber", orderNumber);
+        templateArgs.add(orderArgs);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("orderNumber", orderNumber);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Fuel.INSTANCE.post(EMAIL_URL , templateArgs)
                 .responseString(new Handler<String>() {
                     @Override
                     public void success(String s) {
@@ -164,7 +186,32 @@ public class CartActivity extends BaseActivity {
                 });
 
     }
-        private void showToast(String message){
+
+    private void uploadData() {
+        List<ItemsDomain> itemsDomainList = managmentCart.getListCart();
+        List<ProductInfo> productInfoList = new ArrayList<>();
+
+        for(ItemsDomain itemDomain : itemsDomainList) {
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.setPrice(itemDomain.getPrice());
+            productInfo.setTitle(itemDomain.getTitle());
+            productInfo.setItemQuantity(itemDomain.getNumberinCart());
+
+            productInfoList.add(productInfo);
+        }
+
+
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setProductInfoList(productInfoList);
+        orderInfo.setEmail("C20489426@gmail.com");
+        orderInfo.setTotalPrice(total);
+        String orderNumber = orderRepository.sendOrder(orderInfo);
+        launchEmail(orderNumber);
+
+
+    }
+
+    private void showToast(String message){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
