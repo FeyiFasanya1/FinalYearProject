@@ -45,6 +45,8 @@ public class HomeActivity extends BaseActivity {
 
     private void bottomNavigation() {
         binding.cartBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, CartActivity.class)));
+        binding.ordersBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, OrdersActivity.class)));
+
     }
 
     private void initPopular() {
