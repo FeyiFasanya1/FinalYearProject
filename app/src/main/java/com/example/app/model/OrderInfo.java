@@ -6,6 +6,29 @@ public class OrderInfo {
     String email;
     double totalPrice;
 
+    String orderStatus;
+
+    double orderDate;
+
+    public double getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(double orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    List<ProductInfo> productInfoList;
+
+
     public String getEmail() {
         return email;
     }
@@ -31,6 +54,6 @@ public class OrderInfo {
         this.productInfoList = productInfoList;
     }
 
-    List<ProductInfo> productInfoList;
-
 }
+
+
