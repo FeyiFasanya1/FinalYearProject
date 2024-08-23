@@ -1,13 +1,16 @@
 package com.example.app.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.app.R;
 import com.example.app.model.OrderInfo;
 
@@ -16,6 +19,7 @@ import java.util.List;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder> {
 
     private List<OrderInfo> orderList;
+    private Context context;
 
     public OrdersAdapter(List<OrderInfo> orderList) {
         this.orderList = orderList;
@@ -24,7 +28,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     @NonNull
     @Override
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_orders, parent, false);
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_order_item, parent, false);
         return new OrdersViewHolder(view);
     }
 
@@ -39,23 +44,22 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         return orderList.size();
     }
 
-    class OrdersViewHolder extends RecyclerView.ViewHolder {
+    public class OrdersViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView orderEmail, orderStatus, orderDate, orderTotalPrice;
+        private ImageView orderImage;
+        private TextView orderTitle, orderTotalPrice;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
-            orderEmail = itemView.findViewById(R.id.order_email);
-            orderStatus = itemView.findViewById(R.id.order_status);
-            orderDate = itemView.findViewById(R.id.order_date);
+            orderImage = itemView.findViewById(R.id.order_image);
+            orderTitle = itemView.findViewById(R.id.order_title);
             orderTotalPrice = itemView.findViewById(R.id.order_total_price);
         }
 
         public void bind(OrderInfo order) {
-            orderEmail.setText(order.getEmail());
-            orderStatus.setText(order.getOrderStatus());
-            orderDate.setText(String.valueOf(order.getOrderDate()));  // Convert to a readable date format if needed
-            orderTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+            orderTitle.setText(order.getOrderStatus());
+            orderTotalPrice.setText(String.format("$%.2f", order.getTotalPrice()));
+            Glide.with(context).load(order.getEmail()).into(orderImage);
         }
     }
 }

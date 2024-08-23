@@ -4,6 +4,8 @@ import java.util.List;
 
 public class OrderInfo {
     String email;
+
+    String title;
     double totalPrice;
 
     String orderStatus;
@@ -43,6 +45,14 @@ public class OrderInfo {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 

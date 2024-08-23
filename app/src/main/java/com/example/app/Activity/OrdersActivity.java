@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.app.Adapter.OrdersAdapter;
-import com.example.app.Domain.ItemsDomain;
-import com.example.app.R;
 import com.example.app.model.OrderInfo;
+import com.example.app.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,20 +22,22 @@ import java.util.List;
 public class OrdersActivity extends AppCompatActivity {
 
     private ActivityOrdersBinding binding;
-    private List<OrderInfo> orders;  // Declare the orders list
+    private List<OrderInfo> orders;
     private OrdersAdapter ordersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders);
         binding = ActivityOrdersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        orders = new ArrayList<>();  // Initialize the orders list
-        ordersAdapter = new OrdersAdapter(orders);  // Initialize the OrdersAdapter
+        orders = new ArrayList<>();
+        ordersAdapter = new OrdersAdapter(orders);
 
-        initOrders();  // Initialize the orders loading method
+        binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewOfficial.setAdapter(ordersAdapter);
+
+        initOrders();
     }
 
     private void initOrders() {
@@ -49,13 +49,9 @@ public class OrdersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot issue : snapshot.getChildren()) {
-                        orders.add(issue.getValue(OrderInfo.class));  // Load orders into the list
+                        orders.add(issue.getValue(OrderInfo.class));
                     }
-                    if (!orders.isEmpty()) {
-                        binding.recyclerViewOfficial.setLayoutManager(new GridLayoutManager(OrdersActivity.this, 2));
-                        binding.recyclerViewOfficial.setAdapter(ordersAdapter);  // Set the adapter with the loaded orders
-                    }
-                    ordersAdapter.notifyDataSetChanged();  // Notify the adapter of data changes
+                    ordersAdapter.notifyDataSetChanged();
                     binding.progressBarOffical.setVisibility(View.GONE);
                 }
             }
