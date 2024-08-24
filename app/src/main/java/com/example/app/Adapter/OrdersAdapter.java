@@ -29,7 +29,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     @Override
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_order_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_order_detail, parent, false);
         return new OrdersViewHolder(view);
     }
 
@@ -47,13 +47,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public class OrdersViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView orderImage;
-        private TextView orderTitle, orderTotalPrice;
+        private TextView orderTitle, orderTotalPrice, orderQuantity;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
             orderImage = itemView.findViewById(R.id.order_image);
             orderTitle = itemView.findViewById(R.id.order_title);
-            orderTotalPrice = itemView.findViewById(R.id.order_total_price);
+            orderQuantity = itemView.findViewById(R.id.order_quantity);
+            orderTotalPrice = itemView.findViewById(R.id.order_price);
         }
 
         public void bind(OrderInfo order) {
