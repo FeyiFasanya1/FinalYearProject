@@ -1,7 +1,5 @@
 package com.example.app.Activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.app.Adapter.CartAdapter;
 import com.example.app.Domain.ItemsDomain;
 import com.example.app.Domain.OrderRepository;
-import com.example.app.Helper.ChangeNumberItemsListener;
 import com.example.app.Helper.ManagmentCart;
 import com.example.app.databinding.ActivityCartBinding;
 import com.example.app.model.OrderInfo;
 import com.example.app.model.ProductInfo;
-import com.google.gson.Gson;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -28,9 +24,10 @@ import com.github.kittinunf.fuel.core.Handler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import kotlin.Pair;
 
@@ -66,7 +63,7 @@ public class CartActivity extends BaseActivity {
         orderRepository = new OrderRepository();
 
         calculatorCart();
-        setVarialbe();
+        setVariable();
         initCartList();
     }
 
@@ -84,7 +81,7 @@ public class CartActivity extends BaseActivity {
         binding.cartView.setAdapter(new CartAdapter(managmentCart.getListCart(), this, () -> calculatorCart()));
     }
 
-    private void setVarialbe() {
+    private void setVariable() {
         binding.backBtn.setOnClickListener(v -> finish());
         binding.checkOutBtn.setOnClickListener(v -> {
             launchStripe();
@@ -203,8 +200,11 @@ public class CartActivity extends BaseActivity {
 
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setProductInfoList(productInfoList);
+        orderInfo.setOrderDate(System.currentTimeMillis());
+        orderInfo.setOrderStatus("ORDER PROCESSING");
         orderInfo.setEmail("C20489426@gmail.com");
         orderInfo.setTotalPrice(total);
+        orderInfo.setId(UUID.randomUUID().toString());
         String orderNumber = orderRepository.sendOrder(orderInfo);
         launchEmail(orderNumber);
 

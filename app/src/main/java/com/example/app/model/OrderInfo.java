@@ -1,5 +1,7 @@
 package com.example.app.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class OrderInfo {
@@ -8,21 +10,44 @@ public class OrderInfo {
     String title;
     double totalPrice;
 
+    String OrderQuantity;
+
     String orderStatus;
 
-    double orderDate;
+    Long orderDate;
 
-    public double getOrderDate() {
+    String id;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Long getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(double orderDate) {
+    public void setOrderDate(Long orderDate) {
         this.orderDate = orderDate;
     }
+
+    public String getForamattedOrderDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd");
+        String formattedDate = formatter.format(orderDate);
+        return formattedDate;
+    }
+
+
 
     public String getOrderStatus() {
         return orderStatus;
     }
+
+
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
@@ -55,6 +80,14 @@ public class OrderInfo {
         this.title = title;
     }
 
+    public String getOrderQuantity() {
+        return OrderQuantity;
+    }
+
+    public void setOrderQuantity(String orderQuantity) {
+        OrderQuantity = orderQuantity;
+    }
+
 
     public List<ProductInfo> getProductInfoList() {
         return productInfoList;
@@ -63,6 +96,7 @@ public class OrderInfo {
     public void setProductInfoList(List<ProductInfo> productInfoList) {
         this.productInfoList = productInfoList;
     }
+
 
 }
 

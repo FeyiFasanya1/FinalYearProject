@@ -15,9 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
         public String sendOrder(OrderInfo orderInfo){
             Log.d(TAG, String.valueOf(orderInfo.getTotalPrice()));
-         DatabaseReference orderRef = database.push();
+         DatabaseReference orderRef = database.child(orderInfo.getId());
          orderRef.setValue(orderInfo);
-         return orderRef.getKey();
+         return orderInfo.getId();
 
 
 

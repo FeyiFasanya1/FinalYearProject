@@ -2,6 +2,21 @@ package com.example.app.model;
 
 public class ProductInfo {
 
+    String title;
+    double price;
+
+    int itemQuantity;
+    String picUrl;
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+
     public String getTitle() {
         return title;
     }
@@ -26,9 +41,6 @@ public class ProductInfo {
         this.itemQuantity = itemQuantity;
     }
 
-    String title;
-    double price;
 
-    int itemQuantity;
 
 }

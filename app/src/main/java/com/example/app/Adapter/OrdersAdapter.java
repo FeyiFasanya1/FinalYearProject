@@ -9,34 +9,45 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.example.app.R;
+import com.example.app.databinding.ViewholderOrderListBinding;
 import com.example.app.model.OrderInfo;
 
 import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder> {
 
+    public interface OrdersCallback {
+        void onItemCLick(String orderId);
+    }
     private List<OrderInfo> orderList;
     private Context context;
 
-    public OrdersAdapter(List<OrderInfo> orderList) {
+    private OrdersCallback callback;
+
+    public OrdersAdapter(List<OrderInfo> orderList, OrdersCallback callback) {
         this.orderList = orderList;
+        this.callback = callback;
     }
 
     @NonNull
     @Override
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_order_detail, parent, false);
-        return new OrdersViewHolder(view);
+        ViewholderOrderListBinding binding = ViewholderOrderListBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        return new OrdersViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
         OrderInfo order = orderList.get(position);
-        holder.bind(order);  // Bind order data to the view
+        holder.binding.orderStatusValue.setText(order.getOrderStatus());
+        holder.binding.orderDate.setText(order.getForamattedOrderDate());
+        holder.binding.orderPriceValue.setText('€' + String.valueOf(order.getTotalPrice()));
+        holder.binding.orderListItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onItemCLick(order.getId());
+            }
+        });
     }
 
     @Override
@@ -46,21 +57,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
     public class OrdersViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView orderImage;
-        private TextView orderTitle, orderTotalPrice, orderQuantity;
+        ViewholderOrderListBinding binding;
 
-        public OrdersViewHolder(@NonNull View itemView) {
-            super(itemView);
-            orderImage = itemView.findViewById(R.id.order_image);
-            orderTitle = itemView.findViewById(R.id.order_title);
-            orderQuantity = itemView.findViewById(R.id.order_quantity);
-            orderTotalPrice = itemView.findViewById(R.id.order_price);
-        }
+        public OrdersViewHolder(ViewholderOrderListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-        public void bind(OrderInfo order) {
-            orderTitle.setText(order.getOrderStatus());
-            orderTotalPrice.setText(String.format("$%.2f", order.getTotalPrice()));
-            Glide.with(context).load(order.getEmail()).into(orderImage);
         }
     }
 }

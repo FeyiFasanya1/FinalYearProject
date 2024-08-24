@@ -2,64 +2,62 @@ package com.example.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.app.Adapter.OrdersAdapter;
+import com.example.app.Adapter.OrderDetailAdapter;
+import com.example.app.databinding.ActivityOrdersDetailBinding;
 import com.example.app.model.OrderInfo;
-import com.example.app.R;
+import com.example.app.model.ProductInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.example.app.databinding.ActivityOrdersBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersActivity extends AppCompatActivity {
+public class OrderDetailActivity extends AppCompatActivity {
 
-    private ActivityOrdersBinding binding;
-    private List<OrderInfo> orders;
-    private OrdersAdapter ordersAdapter;
+    private ActivityOrdersDetailBinding binding;
+
+    private OrderInfo orderInfo;
+
+    private OrderDetailAdapter orderDetailAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityOrdersBinding.inflate(getLayoutInflater());
+        binding = ActivityOrdersDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        orders = new ArrayList<>();
-        ordersAdapter = new OrdersAdapter(orders, orderId -> {
-            Intent intent = new Intent(OrdersActivity.this, OrderDetailActivity.class);
-            intent.putExtra("ORDER_ID", orderId);
-
-            startActivity(intent);
-        });
+        orderInfo = new OrderInfo();
+        Intent intent = getIntent();
+        String orderId = intent.getStringExtra("ORDER_ID");
 
         binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerViewOfficial.setAdapter(ordersAdapter);
-
-        initOrders();
+        initOrderDetail(orderId);
     }
 
-    private void initOrders() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Orders");
+    private void initOrderDetail(String orderId) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Orders").child(orderId);
         binding.progressBarOffical.setVisibility(View.VISIBLE);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    for (DataSnapshot issue : snapshot.getChildren()) {
-                        orders.add(issue.getValue(OrderInfo.class));
-                    }
-                    ordersAdapter.notifyDataSetChanged();
+                    Log.d("Order Detail", "snapshot success");
+
+                    orderInfo = snapshot.getValue(OrderInfo.class);
+                    Log.d("Order Detail", "yoo" + orderInfo.getProductInfoList().size());
+
+                    orderDetailAdapter = new OrderDetailAdapter(orderInfo.getProductInfoList());
+                    binding.recyclerViewOfficial.setAdapter(orderDetailAdapter);
                     binding.progressBarOffical.setVisibility(View.GONE);
                 }
             }
@@ -71,3 +69,5 @@ public class OrdersActivity extends AppCompatActivity {
         });
     }
 }
+
+
