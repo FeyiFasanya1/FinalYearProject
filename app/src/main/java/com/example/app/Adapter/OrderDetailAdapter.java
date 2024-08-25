@@ -9,6 +9,7 @@
 
     import com.bumptech.glide.Glide;
     import com.example.app.databinding.ViewholderOrderDetailBinding;
+    import com.example.app.model.OrderInfo;
     import com.example.app.model.ProductInfo;
     import java.util.List;
 
@@ -33,9 +34,8 @@
         @Override
         public void onBindViewHolder(@NonNull OrderDetailAdapter.Viewholder holder, int position) {
             holder.binding.orderTitle.setText(productInfoList.get(position).getTitle());
-            holder.binding.orderDate.setText(productInfoList.get(position).getTitle());
-            holder.binding.orderQuantity.setText(productInfoList.get(position).getTitle());
-            holder.binding.itemPrice.setText(productInfoList.get(position).getTitle());
+            holder.binding.itemQuantityValue.setText(String.valueOf(productInfoList.get(position).getItemQuantity()));
+            holder.binding.itemPriceValue.setText('€' + String.valueOf(productInfoList.get(position).getPrice()));
 
             Glide.with(context)
                     .load(productInfoList.get(position).getPicUrl())
