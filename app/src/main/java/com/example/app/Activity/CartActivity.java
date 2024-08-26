@@ -191,9 +191,9 @@ public class CartActivity extends BaseActivity {
         for(ItemsDomain itemDomain : itemsDomainList) {
             ProductInfo productInfo = new ProductInfo();
             productInfo.setPrice(itemDomain.getPrice());
+            productInfo.setPicUrl(itemDomain.getPicUrl().get(0));
             productInfo.setTitle(itemDomain.getTitle());
             productInfo.setItemQuantity(itemDomain.getNumberinCart());
-
             productInfoList.add(productInfo);
         }
 
@@ -201,7 +201,7 @@ public class CartActivity extends BaseActivity {
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setProductInfoList(productInfoList);
         orderInfo.setOrderDate(System.currentTimeMillis());
-        orderInfo.setOrderStatus("ORDER PROCESSING");
+        orderInfo.setOrderStatus("ORDER PROCESSED");
         orderInfo.setEmail("C20489426@gmail.com");
         orderInfo.setTotalPrice(total);
         orderInfo.setId(UUID.randomUUID().toString());

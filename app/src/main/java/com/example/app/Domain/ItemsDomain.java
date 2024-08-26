@@ -9,6 +9,7 @@ public class ItemsDomain implements Serializable {
     private ArrayList<String> picUrl;
     private double price;
     private double oldPrice;
+
     private int review;
     private double rating;
     private int NumberinCart;
