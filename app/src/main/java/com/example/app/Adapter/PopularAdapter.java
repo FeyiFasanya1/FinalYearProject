@@ -18,13 +18,17 @@ import com.example.app.Domain.ItemsDomain;
 import com.example.app.databinding.ViewholderPopListBinding;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewholder> {
-    ArrayList<ItemsDomain> items;
-    Context context;
+    private ArrayList<ItemsDomain> items;
+    private ArrayList<ItemsDomain> itemsFull; // For storing the full list of items
+    private Context context;
 
     public PopularAdapter(ArrayList<ItemsDomain> items) {
         this.items = items;
+        this.itemsFull = new ArrayList<>(items); // Copy of the original list
     }
 
     @NonNull
@@ -37,35 +41,47 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
 
     @Override
     public void onBindViewHolder(@NonNull PopularAdapter.Viewholder holder, int position) {
-        holder.binding.title.setText(items.get(position).getTitle());
-        holder.binding.reviewTxt.setText("" + items.get(position).getReview());
-        holder.binding.priceTxt.setText("€" + items.get(position).getPrice());
-        holder.binding.ratingTxt.setText("(" + items.get(position).getRating() + ")");
-        holder.binding.oldPriceTxt.setText("€" + items.get(position).getOldPrice());
+        ItemsDomain currentItem = items.get(position);
+        holder.binding.title.setText(currentItem.getTitle());
+        holder.binding.reviewTxt.setText("" + currentItem.getReview());
+        holder.binding.priceTxt.setText("€" + currentItem.getPrice());
+        holder.binding.ratingTxt.setText("(" + currentItem.getRating() + ")");
+        holder.binding.oldPriceTxt.setText("€" + currentItem.getOldPrice());
         holder.binding.oldPriceTxt.setPaintFlags(holder.binding.oldPriceTxt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.binding.ratingBar.setRating((float) items.get(position).getRating());
+        holder.binding.ratingBar.setRating((float) currentItem.getRating());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop());
 
         Glide.with(context)
-                .load(items.get(position).getPicUrl().get(0))
+                .load(currentItem.getPicUrl().get(0))
                 .apply(requestOptions)
                 .into(holder.binding.pic);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("object", items.get(position));
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("object", items.get(position));
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void filter(String text) {
+        if (text.isEmpty()) {
+            items.clear();
+            items.addAll(itemsFull);
+        } else {
+            items.clear();
+            List<ItemsDomain> filteredList = itemsFull.stream()
+                    .filter(item -> item.getTitle().toLowerCase().contains(text.toLowerCase()))
+                    .collect(Collectors.toList());
+            items.addAll(filteredList);
+        }
+        notifyDataSetChanged();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {

@@ -2,6 +2,7 @@ package com.example.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -59,6 +60,8 @@ public class OrdersActivity extends AppCompatActivity {
                     for (DataSnapshot issue : snapshot.getChildren()) {
                         orders.add(issue.getValue(OrderInfo.class));
                     }
+                    Log.d("ORDERS", String.valueOf(orders.size()));
+
                     ordersAdapter.notifyDataSetChanged();
                     binding.progressBarOffical.setVisibility(View.GONE);
                 }

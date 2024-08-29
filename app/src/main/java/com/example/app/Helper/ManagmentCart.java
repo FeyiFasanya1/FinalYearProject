@@ -65,4 +65,11 @@ public class ManagmentCart {
         }
         return fee;
     }
+
+    // clear the cart
+    public void clearCart() {
+        tinyDB.putListObject("CartList", new ArrayList<ItemsDomain>());
+        Toast.makeText(context, "Cart has been cleared", Toast.LENGTH_SHORT).show();
+    }
 }
+

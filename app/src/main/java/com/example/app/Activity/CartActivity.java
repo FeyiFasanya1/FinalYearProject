@@ -136,6 +136,11 @@ public class CartActivity extends BaseActivity {
             uploadData();
             Toast.makeText(this, "Payment is successful", Toast.LENGTH_SHORT).show();
 
+            // Clear cart after successful payment
+            managmentCart.clearCart();
+            // Reinitialize cart view
+            initCartList();
+
         }
     }
 
