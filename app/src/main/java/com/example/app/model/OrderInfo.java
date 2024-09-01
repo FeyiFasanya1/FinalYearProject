@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class OrderInfo {
+public class OrderInfo implements Comparable<OrderInfo> {
     String email;
 
     String title;
@@ -17,6 +17,16 @@ public class OrderInfo {
     Long orderDate;
 
     String id;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    String userId;
 
 
     public String getId() {
@@ -98,6 +108,10 @@ public class OrderInfo {
     }
 
 
+    @Override
+    public int compareTo(OrderInfo o) {
+        return o.orderDate.compareTo(this.orderDate);
+    }
 }
 
 

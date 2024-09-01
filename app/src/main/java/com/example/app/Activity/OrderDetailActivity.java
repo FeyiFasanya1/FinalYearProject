@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.app.Adapter.OrderDetailAdapter;
+import com.example.app.R;
 import com.example.app.databinding.ActivityOrdersDetailBinding;
 import com.example.app.model.OrderInfo;
 import com.example.app.model.ProductInfo;
@@ -41,6 +43,16 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
         initOrderDetail(orderId);
+
+
+        ImageView backBtn = findViewById(R.id.backBtn3);
+
+        // Set an OnClickListener to handle the click event
+        backBtn.setOnClickListener(v -> {
+            Intent intent1 = new Intent(OrderDetailActivity.this, OrdersActivity.class);
+            startActivity(intent1);
+            finish();  // close the current activity if you don't want it in the back stack
+        });
     }
 
     private void initOrderDetail(String orderId) {

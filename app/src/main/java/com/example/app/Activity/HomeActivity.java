@@ -20,6 +20,7 @@
     import com.example.app.Domain.CategoryDomain;
     import com.example.app.Domain.ItemsDomain;
     import com.example.app.Domain.SliderItems;
+    import com.example.app.MainActivity;
     import com.example.app.databinding.ActivityHomeBinding;
     import com.google.firebase.database.DataSnapshot;
     import com.google.firebase.database.DatabaseError;
@@ -54,6 +55,8 @@
             binding.cartBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, CartActivity.class)));
             binding.ordersBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, OrdersActivity.class)));
             binding.chartBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChartActivity.class)));
+            binding.profileBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, MainActivity.class)));
+
 
         }
 

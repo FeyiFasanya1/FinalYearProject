@@ -15,6 +15,7 @@
     import com.example.app.databinding.ActivityCartBinding;
     import com.example.app.model.OrderInfo;
     import com.example.app.model.ProductInfo;
+    import com.google.firebase.auth.FirebaseAuth;
     import com.stripe.android.PaymentConfiguration;
     import com.stripe.android.paymentsheet.PaymentSheet;
     import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -209,6 +210,10 @@
             orderInfo.setOrderStatus("ORDER PROCESSED");
             orderInfo.setEmail("C20489426@gmail.com");
             orderInfo.setTotalPrice(total);
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            orderInfo.setUserId(userId);
+
             orderInfo.setId(UUID.randomUUID().toString());
             String orderNumber = orderRepository.sendOrder(orderInfo);
             launchEmail(orderNumber);
