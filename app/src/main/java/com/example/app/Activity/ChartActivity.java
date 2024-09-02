@@ -16,12 +16,18 @@
     import com.google.firebase.database.ValueEventListener;
     import org.eazegraph.lib.models.BarModel;
     import org.eazegraph.lib.charts.BarChart;
+    import org.eazegraph.lib.models.ValueLinePoint;
+
     import java.text.SimpleDateFormat;
+    import java.time.Month;
     import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.Date;
     import java.util.HashMap;
     import java.util.List;
     import java.util.Locale;
     import java.util.Map;
+    import java.util.Set;
 
     public class ChartActivity extends AppCompatActivity {
         private ActivityChartBinding binding;
@@ -60,8 +66,8 @@
                         Log.d("ORDERS", String.valueOf(orders.size()));
 
                         // Group orders by month + calculate totals
-                        Map<String, Double> monthTotals = getMonthTotals(orders);
-                        for(String key : monthTotals.keySet()){
+                        Map<Integer, Double> monthTotals = getMonthTotals(orders);
+                        for(Integer key : monthTotals.keySet()){
                             Log.d("Month",key + ":" + monthTotals.get(key));
                         }
 
@@ -79,13 +85,13 @@
             });
         }
 
-        private Map<String, Double> getMonthTotals(List<OrderInfo> orders) {
-            Map<String, Double> monthTotals = new HashMap<>();
+        private Map<Integer, Double> getMonthTotals(List<OrderInfo> orders) {
+            Map<Integer, Double> monthTotals = new HashMap<>();
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
             for (OrderInfo order : orders) {
                 // Converting orderDate from Long to Date
-                String month = monthFormat.format(order.getOrderDate());
+                int month = new Date(order.getOrderDate()).getMonth() + 1;
 
                 // Update the total for the month
                 double total = monthTotals.getOrDefault(month, 0.0);
@@ -96,14 +102,25 @@
             return monthTotals;
         }
 
-        private void addBarsToChart(BarChart barChart, Map<String, Double> monthTotals) {
-            for (Map.Entry<String, Double> entry : monthTotals.entrySet()) {
-                String month = entry.getKey();
-                double total = entry.getValue();
+        private void addBarsToChart(BarChart barChart, Map<Integer, Double> monthTotals) {
+            Set<Integer> keySet = monthTotals.keySet();
 
-                // Creating a BarModel + adding to chart
-                BarModel barModel = new BarModel(month, (float) total, 0xFF123456);
-                barChart.addBar(barModel);
+            // Step 2: Convert keyset to a List
+            List<Integer> keyList = new ArrayList<>(keySet);
+
+            // Step 3: Sort the list
+            Collections.sort(keyList);
+            for (Integer entry : keyList) {
+                Month month = Month.of(entry);
+
+                // Get the abbreviation of the month
+                String monthAbbreviation = month.name().substring(0, 3).toUpperCase();
+                double total = monthTotals.get(entry);
+
+                Log.d("Month", "number: " +entry + "month: "+monthAbbreviation + "total: "+total);
+
+                // Creating a ValueLinePoint and adding to series
+                barChart.addBar(new BarModel(monthAbbreviation, (float) total, 0xFF123456));
             }
 
             barChart.startAnimation();

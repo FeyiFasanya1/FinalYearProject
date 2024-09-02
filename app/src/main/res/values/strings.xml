@@ -67,4 +67,9 @@
     <string name="for_pickup">Your Order is ready for pickup</string>
     <string name="womancolth">Women\'s Clothes</string>
     <string name="mencolth">Men Clothes</string>
+    <string-array name="order_status_array">
+        <item>ORDER PROCESSED</item>
+        <item>ORDER SHIPPED</item>
+        <item>ORDER DELIVERED</item>
+    </string-array>
 </resources>

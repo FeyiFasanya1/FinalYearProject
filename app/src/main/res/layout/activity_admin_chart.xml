@@ -17,12 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back" />
 
-    <!-- Title or Header -->
-
-    <!-- BarChart View -->
-
-    <!-- ProgressBar centered on BarChart -->
-
     <TextView
         android:id="@+id/tvChartTitle"
         android:layout_width="wrap_content"
@@ -39,12 +33,11 @@
 
     <org.eazegraph.lib.charts.ValueLineChart
         android:id="@+id/cubiclinechart"
-        android:layout_width="344dp"
+        android:layout_width="0dp"
         android:layout_height="449dp"
         android:layout_marginTop="84dp"
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvChartTitle"  />
 

@@ -82,6 +82,7 @@
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if (snapshot.exists()) {
                                                 User user = snapshot.getValue(User.class);
+                                                UserAuth.getInstance().setUser(user);
 
                                                 if (user.isAdmin()) {
                                                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();

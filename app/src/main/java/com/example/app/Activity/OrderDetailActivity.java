@@ -49,9 +49,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Set an OnClickListener to handle the click event
         backBtn.setOnClickListener(v -> {
-            Intent intent1 = new Intent(OrderDetailActivity.this, OrdersActivity.class);
-            startActivity(intent1);
-            finish();  // close the current activity if you don't want it in the back stack
+          getOnBackPressedDispatcher().onBackPressed();
         });
     }
 

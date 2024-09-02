@@ -41,7 +41,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="112dp"
             android:layout_marginTop="16dp"
-            android:text="My Customers Orders:"
+            android:text=" Customer Orders:"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"

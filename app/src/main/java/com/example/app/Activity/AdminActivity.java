@@ -2,7 +2,6 @@
 
     import android.content.Intent;
     import android.os.Bundle;
-    import android.util.Log;
     import android.view.View;
 
     import androidx.annotation.NonNull;
@@ -11,6 +10,7 @@
 
     import com.example.app.Adapter.OrdersAdapter;
     import com.example.app.MainActivity;
+    import com.example.app.UserAuth;
     import com.example.app.databinding.ActivityAdminBinding;
     import com.example.app.model.OrderInfo;
     import com.google.firebase.auth.FirebaseAuth;
@@ -36,27 +36,36 @@
             binding = ActivityAdminBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
+            // Determine if the user is an admin
+            boolean isAdmin = UserAuth.getInstance().getUser().isAdmin();
+
             orders = new ArrayList<>();
-            ordersAdapter = new OrdersAdapter(orders, orderId -> {
-                Intent intent = new Intent(AdminActivity.this, OrderDetailActivity.class);
-                intent.putExtra("ORDER_ID", orderId);
-                startActivity(intent);
-            });
+            ordersAdapter = new OrdersAdapter(orders, new OrdersAdapter.OrdersCallback() {
+                @Override
+                public void onItemCLick(String orderId) {
+                    Intent intent = new Intent(AdminActivity.this, OrderDetailActivity.class);
+                    intent.putExtra("ORDER_ID", orderId);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onOrderUpdated(OrderInfo order) {
+                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Orders/"+  order.getId());
+                    myRef.setValue(order);
+                }
+            }, isAdmin);
 
             binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
             binding.recyclerViewOfficial.setAdapter(ordersAdapter);
 
             initOrders();
             bottomNavigation();
-
         }
 
         private void bottomNavigation() {
             binding.chartBtn2.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminChartActivity.class)));
             binding.profileBtn.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, MainActivity.class)));
-
         }
-
 
         private void initOrders() {
             DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Orders");

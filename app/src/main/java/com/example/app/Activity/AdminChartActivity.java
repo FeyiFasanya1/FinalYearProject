@@ -93,11 +93,10 @@
 
         private Map<Integer, Double> getMonthTotals(List<OrderInfo> orders) {
             Map<Integer, Double> monthTotals = new HashMap<>();
-            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
             for (OrderInfo order : orders) {
                 // Converting orderDate from Long to Date
-                int month = new Date(order.getOrderDate()).getMonth();
+                int month = new Date(order.getOrderDate()).getMonth() + 1;
 
                 // Update the total for the month
                 double total = monthTotals.getOrDefault(month, 0.0);
@@ -119,6 +118,8 @@
 
             // Step 3: Sort the list
             Collections.sort(keyList);
+
+            series.addPoint(new ValueLinePoint("", 0));
             for (Integer entry : keyList) {
                 Month month = Month.of(entry);
 
@@ -126,9 +127,14 @@
                 String monthAbbreviation = month.name().substring(0, 3).toUpperCase();
                 double total = monthTotals.get(entry);
 
+                Log.d("Month", "number: " +entry + "month: "+monthAbbreviation + "total: "+total);
+
                 // Creating a ValueLinePoint and adding to series
                 series.addPoint(new ValueLinePoint(monthAbbreviation, (float) total));
             }
+
+
+            series.addPoint(new ValueLinePoint("", series.getSeries().get(series.getSeries().size() - 1).getValue()));
 
             valueLineChart.addSeries(series);
             valueLineChart.startAnimation();
