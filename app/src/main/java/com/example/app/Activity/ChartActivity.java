@@ -4,19 +4,22 @@
     import android.os.Bundle;
     import android.util.Log;
     import android.view.View;
+
     import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
+
     import com.example.app.R;
     import com.example.app.databinding.ActivityChartBinding;
     import com.example.app.model.OrderInfo;
+    import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.database.DataSnapshot;
     import com.google.firebase.database.DatabaseError;
     import com.google.firebase.database.DatabaseReference;
     import com.google.firebase.database.FirebaseDatabase;
     import com.google.firebase.database.ValueEventListener;
-    import org.eazegraph.lib.models.BarModel;
+
     import org.eazegraph.lib.charts.BarChart;
-    import org.eazegraph.lib.models.ValueLinePoint;
+    import org.eazegraph.lib.models.BarModel;
 
     import java.text.SimpleDateFormat;
     import java.time.Month;
@@ -32,7 +35,6 @@
     public class ChartActivity extends AppCompatActivity {
         private ActivityChartBinding binding;
         private List<OrderInfo> orders;
-
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +56,26 @@
 
         private void initMonthlyOrders() {
             DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Orders");
-           binding.progressBarBanner.setVisibility(View.VISIBLE);
+            binding.progressBarBanner.setVisibility(View.VISIBLE);
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the current user ID
 
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         for (DataSnapshot issue : snapshot.getChildren()) {
-                            orders.add(issue.getValue(OrderInfo.class));
+                            OrderInfo order = issue.getValue(OrderInfo.class);
+                            if (order != null && order.getUserId() != null && order.getUserId().equals(userId)) {
+                                orders.add(order); // Only add orders that belong to the signed-in user
+                            }
                         }
                         Log.d("ORDERS", String.valueOf(orders.size()));
 
                         // Group orders by month + calculate totals
                         Map<Integer, Double> monthTotals = getMonthTotals(orders);
-                        for(Integer key : monthTotals.keySet()){
-                            Log.d("Month",key + ":" + monthTotals.get(key));
+                        for (Integer key : monthTotals.keySet()) {
+                            Log.d("Month", key + ":" + monthTotals.get(key));
                         }
 
                         BarChart barChart = findViewById(R.id.barChart);
@@ -117,7 +124,7 @@
                 String monthAbbreviation = month.name().substring(0, 3).toUpperCase();
                 double total = monthTotals.get(entry);
 
-                Log.d("Month", "number: " +entry + "month: "+monthAbbreviation + "total: "+total);
+                Log.d("Month", "number: " + entry + "month: " + monthAbbreviation + "total: " + total);
 
                 // Creating a ValueLinePoint and adding to series
                 barChart.addBar(new BarModel(monthAbbreviation, (float) total, 0xFF123456));
