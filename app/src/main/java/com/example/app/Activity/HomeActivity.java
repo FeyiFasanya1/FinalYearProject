@@ -55,7 +55,8 @@
             binding.cartBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, CartActivity.class)));
             binding.ordersBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, OrdersActivity.class)));
             binding.chartBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChartActivity.class)));
-            binding.profileBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, MainActivity.class)));
+            binding.profileBtn.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ProfileActivity.class)));
+
 
 
         }

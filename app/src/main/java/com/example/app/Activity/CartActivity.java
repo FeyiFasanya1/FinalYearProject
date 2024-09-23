@@ -209,6 +209,7 @@
             orderInfo.setOrderDate(System.currentTimeMillis());
             orderInfo.setOrderStatus("ORDER PROCESSED");
             orderInfo.setEmail("C20489426@gmail.com");
+            orderInfo.setAddress(orderInfo.getAddress());
             orderInfo.setTotalPrice(total);
 
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

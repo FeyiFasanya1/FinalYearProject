@@ -19,6 +19,7 @@
     import com.google.firebase.database.ValueEventListener;
     import com.example.app.databinding.ActivityOrdersBinding;
     import java.util.ArrayList;
+    import java.util.Collections;
     import java.util.List;
 
     public class OrdersActivity extends AppCompatActivity {
@@ -82,6 +83,7 @@
                         }
                         Log.d("ORDERS", String.valueOf(orders.size()));
 
+                        Collections.sort(orders);
                         ordersAdapter.notifyDataSetChanged();
                         binding.progressBarOfficial.setVisibility(View.GONE);
                     }

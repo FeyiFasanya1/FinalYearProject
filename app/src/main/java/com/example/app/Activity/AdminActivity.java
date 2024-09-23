@@ -65,6 +65,9 @@
         private void bottomNavigation() {
             binding.chartBtn2.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, AdminChartActivity.class)));
             binding.profileBtn.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, MainActivity.class)));
+            binding.stockBtn.setOnClickListener(v -> startActivity(new Intent(AdminActivity.this, StockActivity.class)));
+
+
         }
 
         private void initOrders() {

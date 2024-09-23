@@ -93,7 +93,7 @@
             android:id="@+id/postcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Post Code"
+            android:hint="Address"
             android:textSize="20dp"
             android:inputType="textPostalAddress" />
 
