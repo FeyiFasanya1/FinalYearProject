@@ -9,6 +9,7 @@
 
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
+    import androidx.recyclerview.widget.GridLayoutManager;
 
     import com.bumptech.glide.Glide;
     import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -23,12 +24,12 @@
 
     public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewholder> {
         private ArrayList<ItemsDomain> items;
-        private ArrayList<ItemsDomain> itemsFull; // For storing the full list of items
+        private ArrayList<ItemsDomain> itemsFull; // For filtering if needed
         private Context context;
 
         public PopularAdapter(ArrayList<ItemsDomain> items) {
             this.items = items;
-            this.itemsFull = new ArrayList<>(items); // Copy of the original list
+            this.itemsFull = new ArrayList<>(items); // Copy of the original list for filtering
         }
 
         @NonNull
@@ -43,15 +44,23 @@
         public void onBindViewHolder(@NonNull PopularAdapter.Viewholder holder, int position) {
             ItemsDomain currentItem = items.get(position);
             holder.binding.title.setText(currentItem.getTitle());
-            holder.binding.reviewTxt.setText("" + currentItem.getReview());
+            holder.binding.reviewTxt.setText(String.valueOf(currentItem.getReview()));
             holder.binding.priceTxt.setText("€" + currentItem.getPrice());
             holder.binding.ratingTxt.setText("(" + currentItem.getRating() + ")");
             holder.binding.oldPriceTxt.setText("€" + currentItem.getOldPrice());
             holder.binding.oldPriceTxt.setPaintFlags(holder.binding.oldPriceTxt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.binding.ratingBar.setRating((float) currentItem.getRating());
 
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transform(new CenterCrop());
+            // Check for item quantity (out of stock)
+            if (currentItem.getQuantity() == 0) {
+                holder.binding.outOfStockLabel.setVisibility(View.VISIBLE); // layout outOfStockLabel
+                holder.binding.priceTxt.setVisibility(View.GONE);
+            } else {
+                holder.binding.outOfStockLabel.setVisibility(View.GONE);
+                holder.binding.priceTxt.setVisibility(View.VISIBLE);
+            }
+
+            RequestOptions requestOptions = new RequestOptions().transform(new CenterCrop());
 
             Glide.with(context)
                     .load(currentItem.getPicUrl().get(0))
@@ -70,6 +79,23 @@
             return items.size();
         }
 
+        public static class Viewholder extends RecyclerView.ViewHolder {
+            private ViewholderPopListBinding binding;
+
+            public Viewholder(@NonNull ViewholderPopListBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+        }
+
+        // Method to update the list
+        public void updateList(ArrayList<ItemsDomain> newItems){
+            items.clear();
+            items.addAll(newItems);
+            notifyDataSetChanged();
+        }
+
+        // Optional: If you want to support filtering
         public void filter(String text) {
             if (text.isEmpty()) {
                 items.clear();
@@ -84,12 +110,4 @@
             notifyDataSetChanged();
         }
 
-        public class Viewholder extends RecyclerView.ViewHolder {
-            ViewholderPopListBinding binding;
-
-            public Viewholder(ViewholderPopListBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-        }
     }

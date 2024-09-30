@@ -1,6 +1,7 @@
 package com.example.app.Helper;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.app.Domain.ItemsDomain;
@@ -52,6 +53,16 @@ public class ManagmentCart {
     }
 
     public void plusItem(ArrayList<ItemsDomain> listfood, int position, ChangeNumberItemsListener changeNumberItemsListener) {
+        ItemsDomain itemDomain = listfood.get(position);
+        int itemCount = itemDomain.getNumberinCart();
+        Log.d("ITEM COUNT", String.valueOf(itemCount));
+        int itemQuantity = itemDomain.getQuantity();
+        Log.d("ORDER QUANTITY", String.valueOf(itemQuantity));
+        if (itemQuantity < itemCount +1) {
+            Log.d("Cart", "Insufficient stock for " + itemDomain.getTitle());
+            Toast.makeText(context, "Insufficient stock for " + itemDomain.getTitle(), Toast.LENGTH_SHORT).show();
+            return;
+        }
         listfood.get(position).setNumberinCart(listfood.get(position).getNumberinCart() + 1);
         tinyDB.putListObject("CartList", listfood);
         changeNumberItemsListener.changed();

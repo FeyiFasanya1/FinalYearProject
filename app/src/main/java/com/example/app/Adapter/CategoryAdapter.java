@@ -16,9 +16,17 @@
     public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewholder> {
         private ArrayList<CategoryDomain> items;
         private Context context;
+        private CategoryClickListener listener;
 
-        public CategoryAdapter(ArrayList<CategoryDomain> items) {
+        // Define the interface
+        public interface CategoryClickListener {
+            void onCategoryClick(String categoryId);
+        }
+
+        // Modify the constructor to accept the listener
+        public CategoryAdapter(ArrayList<CategoryDomain> items, CategoryClickListener listener) {
             this.items = items;
+            this.listener = listener;
         }
 
         @NonNull
@@ -31,11 +39,19 @@
 
         @Override
         public void onBindViewHolder(@NonNull CategoryAdapter.Viewholder holder, int position) {
-            holder.binding.title.setText(items.get(position).getTitle());
+            CategoryDomain currentCategory = items.get(position);
+            holder.binding.title.setText(currentCategory.getTitle());
 
             Glide.with(context)
-                    .load(items.get(position).getPicUrl())
+                    .load(currentCategory.getPicUrl())
                     .into(holder.binding.pic);
+
+            // Set the onClickListener to notify the listener when a category is clicked
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onCategoryClick(currentCategory.getCategoryId());
+                }
+            });
         }
 
         @Override

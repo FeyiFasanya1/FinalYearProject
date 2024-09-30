@@ -88,22 +88,15 @@ public class DetailActivity extends BaseActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         DescriptionFragment tab1 = new DescriptionFragment();
-        ReviewFragment tab2 = new ReviewFragment();
-        SoldFragment tab3 = new SoldFragment();
 
         Bundle bundle1 = new Bundle();
-        Bundle bundle2 = new Bundle();
-        Bundle bundle3 = new Bundle();
+
 
         bundle1.putString("description", object.getDescription());
 
         tab1.setArguments(bundle1);
-        tab2.setArguments(bundle2);
-        tab3.setArguments(bundle3);
 
         adapter.addFrag(tab1,"Descriptions");
-        adapter.addFrag(tab2,"Reviews");
-        adapter.addFrag(tab3,"Sold");
 
         binding.viewpager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewpager);

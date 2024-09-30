@@ -16,12 +16,15 @@
     import com.example.app.model.OrderInfo;
     import com.example.app.model.ProductInfo;
     import com.google.firebase.auth.FirebaseAuth;
+    import com.google.firebase.database.DatabaseReference;
+    import com.google.firebase.database.FirebaseDatabase;
     import com.stripe.android.PaymentConfiguration;
     import com.stripe.android.paymentsheet.PaymentSheet;
     import com.stripe.android.paymentsheet.PaymentSheetResult;
     import com.github.kittinunf.fuel.Fuel;
     import com.github.kittinunf.fuel.core.FuelError;
     import com.github.kittinunf.fuel.core.Handler;
+
     import org.json.JSONException;
     import org.json.JSONObject;
 
@@ -35,13 +38,10 @@
     public class CartActivity extends BaseActivity {
 
         static final String PAYMENT_URL = "https://ask-lara.com/api/create-checkout-session?";
-
         static final String EMAIL_URL = "https://ask-lara.com/api/send-email-confirmation?";
 
         PaymentSheet paymentSheet;
-
         private String paymentClientSecret;
-
         PaymentSheet.CustomerConfiguration customerConfig;
         private static final String TAG = "CartActivity";
 
@@ -50,8 +50,10 @@
         private double total;
 
         private ManagmentCart managmentCart;
-
         private OrderRepository orderRepository;
+
+        // Firebase database reference
+        private DatabaseReference database;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +65,13 @@
             managmentCart = new ManagmentCart(this);
             orderRepository = new OrderRepository();
 
+            // Initialize Firebase database reference
+            database = FirebaseDatabase.getInstance().getReference("Items"); // Adjust the path as necessary
+
             calculatorCart();
             setVariable();
             initCartList();
         }
-
 
         private void initCartList() {
             if (managmentCart.getListCart().isEmpty()) {
@@ -80,12 +84,13 @@
 
             binding.cartView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             binding.cartView.setAdapter(new CartAdapter(managmentCart.getListCart(), this, () -> calculatorCart()));
+
         }
 
         private void setVariable() {
             binding.backBtn.setOnClickListener(v -> finish());
             binding.checkOutBtn.setOnClickListener(v -> {
-                launchStripe();
+                 launchStripe();
             });
         }
 
@@ -109,7 +114,7 @@
                         }
 
                         @Override
-                        public void failure(@NonNull FuelError fuelError) { /* handle error */
+                        public void failure(@NonNull FuelError fuelError) {
                             Log.d("Checkout", fuelError.getMessage());
                         }
                     });
@@ -132,7 +137,6 @@
             } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
                 Log.e(TAG, "Got error: ", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
             } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-                // Display for example, an order confirmation screen
                 Log.d(TAG, "Completed");
                 uploadData();
                 Toast.makeText(this, "Payment is successful", Toast.LENGTH_SHORT).show();
@@ -141,7 +145,6 @@
                 managmentCart.clearCart();
                 // Reinitialize cart view
                 initCartList();
-
             }
         }
 
@@ -160,9 +163,8 @@
         }
 
         private void launchEmail(String orderNumber) {
-
             List<Pair<String, String>> templateArgs = new ArrayList<>();
-            Pair<String,String> orderArgs = new Pair("orderNumber", orderNumber);
+            Pair<String, String> orderArgs = new Pair("orderNumber", orderNumber);
             templateArgs.add(orderArgs);
 
             JSONObject jsonObject = new JSONObject();
@@ -172,8 +174,7 @@
                 throw new RuntimeException(e);
             }
 
-
-            Fuel.INSTANCE.post(EMAIL_URL , templateArgs)
+            Fuel.INSTANCE.post(EMAIL_URL, templateArgs)
                     .responseString(new Handler<String>() {
                         @Override
                         public void success(String s) {
@@ -187,20 +188,25 @@
                             showToast("Email confirmation cannot be sent");
                         }
                     });
-
         }
 
         private void uploadData() {
             List<ItemsDomain> itemsDomainList = managmentCart.getListCart();
             List<ProductInfo> productInfoList = new ArrayList<>();
 
-            for(ItemsDomain itemDomain : itemsDomainList) {
+
+            for (ItemsDomain itemDomain : itemsDomainList) {
+
                 ProductInfo productInfo = new ProductInfo();
                 productInfo.setPrice(itemDomain.getPrice());
                 productInfo.setPicUrl(itemDomain.getPicUrl().get(0));
                 productInfo.setTitle(itemDomain.getTitle());
                 productInfo.setItemQuantity(itemDomain.getNumberinCart());
                 productInfoList.add(productInfo);
+
+                // Reduce stock quantity
+                Log.d("PRODUCT ID CHECK", itemDomain.getProductId());
+                reduceStock(itemDomain.getProductId(), itemDomain.getNumberinCart());
             }
 
 
@@ -218,17 +224,25 @@
             orderInfo.setId(UUID.randomUUID().toString());
             String orderNumber = orderRepository.sendOrder(orderInfo);
             launchEmail(orderNumber);
-
-
         }
 
-        private void showToast(String message){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(CartActivity.this, message, Toast.LENGTH_LONG).show();
+        private void reduceStock(String productId, int quantity) {
+            database.child(productId).child("quantity").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    int currentStock = task.getResult().getValue(Integer.class);
+                    Log.d("CURRENT STOCK", String.valueOf(currentStock));
+                    if (currentStock >= quantity) {
+                        database.child(productId).child("quantity").setValue(currentStock - quantity);
+                    } else {
+                        showToast("Insufficient stock for " + productId);
+                    }
+                } else {
+                    showToast("Error retrieving stock information");
                 }
             });
+        }
 
+        private void showToast(String message) {
+            runOnUiThread(() -> Toast.makeText(CartActivity.this, message, Toast.LENGTH_LONG).show());
         }
     }

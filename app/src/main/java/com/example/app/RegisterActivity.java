@@ -1,22 +1,15 @@
     package com.example.app;
 
-    import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
 
     import android.content.Intent;
     import android.os.Bundle;
     import android.text.TextUtils;
-    import android.view.View;
     import android.widget.Button;
     import android.widget.TextView;
     import android.widget.Toast;
 
-    import com.example.app.Activity.HomeActivity;
-    import com.example.app.WelcomeActivity;
-    import com.google.android.gms.tasks.OnCompleteListener;
-    import com.google.android.gms.tasks.Task;
     import com.google.android.material.textfield.TextInputEditText;
-    import com.google.firebase.auth.AuthResult;
     import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.database.DatabaseReference;
     import com.google.firebase.database.FirebaseDatabase;
@@ -44,7 +37,7 @@
 
             // Handle the Sign In click event
             SignIn.setOnClickListener(v -> {
-                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             });
@@ -73,7 +66,7 @@
                                 // Registration successful
                                 Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                 // Call method to create user in Firebase Realtime Database
-                                createUser(email, phoneNumber, address);
+                                createUser(email, phoneNumber, address, password);
                             } else {
                                 // Registration failed
                                 Toast.makeText(RegisterActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
@@ -83,13 +76,13 @@
         }
 
         // Method to create user in Firebase Realtime Database
-        private void createUser(String email, String phoneNumber, String address) {
+        private void createUser(String email, String phoneNumber, String address, String password) {
             String userId = firebaseAuth.getCurrentUser().getUid();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("Users/" + userId);
 
             // Create new User object
-            User user = new User(false, userId, email, phoneNumber, address);
+            User user = new User(false, userId, email, phoneNumber, address, password);
 
             // Store the User data in the database
             myRef.setValue(user).addOnCompleteListener(task -> {

@@ -8,13 +8,17 @@
         private String phoneNumber;
         private String address;
 
+        private String password;
+
         // Constructor
-        public User(boolean isAdmin, String userId, String email, String phoneNumber, String address) {
+        public User(boolean isAdmin, String userId, String email, String phoneNumber, String address, String password) {
             this.isAdmin = isAdmin;
             this.userId = userId;
             this.email = email;
             this.phoneNumber = phoneNumber;
             this.address = address;
+            this.password = password;
+
         }
 
 
@@ -60,4 +64,11 @@
         public void setAdmin(boolean admin) {
             isAdmin = admin;
         }
+
+        public String getPassword() {return password ;}
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
+

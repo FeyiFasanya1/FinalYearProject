@@ -2,12 +2,12 @@ package com.example.app.Domain;
 
 public class CategoryDomain {
     private String title;
-    private int id;
+    private String CategoryId;
     private String picUrl;
 
-    public CategoryDomain(String title, int id, String picUrl) {
+    public CategoryDomain(String title, String CategoryId, String picUrl) {
         this.title = title;
-        this.id = id;
+        this.CategoryId = CategoryId;
         this.picUrl = picUrl;
     }
 
@@ -22,12 +22,12 @@ public class CategoryDomain {
         this.title = title;
     }
 
-    public int getId() {
-        return id;
+    public String getCategoryId() {
+        return CategoryId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategoryId(String CategoryId) {
+        this.CategoryId = CategoryId;
     }
 
     public String getPicUrl() {

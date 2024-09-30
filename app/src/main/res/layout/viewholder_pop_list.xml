@@ -17,6 +17,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <TextView
+        android:id="@+id/outOfStockLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:text="OUT OF STOCK"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/pic"
+        app:layout_constraintStart_toStartOf="@+id/pic"
+        app:layout_constraintEnd_toEndOf="@+id/pic" />
+
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"
