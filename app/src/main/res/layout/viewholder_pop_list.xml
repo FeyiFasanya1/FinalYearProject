@@ -58,6 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
     <RatingBar
+        android:visibility="invisible"
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,6 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pic" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/oldPriceTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,6 +99,7 @@
         app:layout_constraintTop_toTopOf="@+id/oldPriceTxt" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/reviewTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,6 +112,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
     <ImageView
+        android:visibility="invisible"
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,6 +123,7 @@
         app:srcCompat="@drawable/review" />
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/ratingTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
