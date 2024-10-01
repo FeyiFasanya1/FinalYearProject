@@ -36,31 +36,30 @@
         public void onBindViewHolder(@NonNull StockAdapter.Viewholder holder, int position) {
             ItemsDomain currentItem = itemsDomainList.get(position);
 
+            // Set the item details
             holder.binding.itemTitle.setText(currentItem.getTitle());
-            holder.binding.itemQuantityValue.setText(String.valueOf(currentItem.getQuantity()));
-            holder.binding.itemPriceValue.setText("€" + String.valueOf(currentItem.getPrice()));
-
-            // Set the EditText fields to current values
             holder.binding.itemQuantityValue.setText(String.valueOf(currentItem.getQuantity()));
             holder.binding.itemPriceValue.setText(String.valueOf(currentItem.getPrice()));
 
-            // Load the first image from the picUrl list using Glide
+            // Load the image using Glide if available
             if (!currentItem.getPicUrl().isEmpty()) {
                 Glide.with(context)
-                        .load(currentItem.getPicUrl().get(0))
+                        .load(currentItem.getPicUrl().get(0))  // Load the first image
                         .into(holder.binding.orderImage);
             }
 
-            // Update button click listener
+            // Handle the update button click
             holder.binding.updateBtn.setOnClickListener(v -> {
+                // Get updated quantity and price values from EditText fields
                 String newQuantityStr = holder.binding.itemQuantityValue.getText().toString();
                 String newPriceStr = holder.binding.itemPriceValue.getText().toString();
 
                 if (!newQuantityStr.isEmpty() && !newPriceStr.isEmpty()) {
+                    // Parse the input values
                     int newQuantity = Integer.parseInt(newQuantityStr);
                     double newPrice = Double.parseDouble(newPriceStr);
 
-                    // Update the item's quantity and price
+                    // Call the method to update the database
                     updateItemInDatabase(currentItem.getProductId(), newQuantity, newPrice);
                 }
             });
@@ -68,11 +67,12 @@
 
         private void updateItemInDatabase(String productId, int newQuantity, double newPrice) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Items").child(productId);
+
+            // Update quantity and price in Firebase
             databaseReference.child("quantity").setValue(newQuantity);
             databaseReference.child("price").setValue(newPrice)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Optionally, you can notify the user or update the UI
                             Log.d("STOCK", "Item updated successfully");
                         } else {
                             Log.d("STOCK", "Failed to update item");

@@ -54,12 +54,8 @@
             }
         }
 
-        /**
-         * Loads the user's phone number and address from Firebase Realtime Database
-         * and displays them in the respective EditText fields.
-         */
         private void loadUserData() {
-            // Show a loading indicator (optional)
+            // Show a loading indicator
             binding.progressBar.setVisibility(View.VISIBLE);
 
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {

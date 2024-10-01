@@ -61,6 +61,7 @@ dependencies {
     implementation ("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation ("com.github.blackfizz:eazegraph:1.2.2@aar")
     implementation("com.nineoldandroids:library:2.4.0")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
 
 
 }
