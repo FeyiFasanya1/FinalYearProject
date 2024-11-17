@@ -2,6 +2,7 @@ package com.example.app.Activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,9 +27,10 @@ import java.util.List;
 public class DetailActivity extends BaseActivity {
     ActivityDetailBinding binding;
     private ItemsDomain object;
+    private String selectedSize = "L";  // Default size
+
     private int numberOrder = 1;
     private ManagmentCart managmentCart;
-    private Handler slideHandle = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +49,11 @@ public class DetailActivity extends BaseActivity {
 
     private void initSize() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("S");
-        list.add("M");
-        list.add("L");
-        list.add("XL");
-        list.add("XXL");
+        list.add("SMALL");
+        list.add("MEDIUM");
+        list.add("LARGE");
 
-        binding.recyclerSize.setAdapter(new SizeAdapter(list));
+        binding.recyclerSize.setAdapter(new SizeAdapter(list, size -> selectedSize = size));
         binding.recyclerSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
     }
@@ -78,8 +78,15 @@ public class DetailActivity extends BaseActivity {
         binding.ratingTxt.setText(object.getRating() + " Rating");
 
         binding.addTocartBtn.setOnClickListener(v -> {
+            if (selectedSize == null) {
+                Toast.makeText(this, "Please select a size", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             object.setNumberinCart(numberOrder);
+            object.setSelectedSize(selectedSize); // Set selected size for the item
             managmentCart.insertItem(object);
+            Toast.makeText(this, "Added to Cart", Toast.LENGTH_SHORT).show();
         });
         binding.backBtn.setOnClickListener(v -> finish());
     }

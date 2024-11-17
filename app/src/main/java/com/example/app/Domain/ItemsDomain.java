@@ -11,16 +11,18 @@
         private double oldPrice;
         private int review;
         private double rating;
+
         private int NumberinCart;
         private String categoryId;
-        private int quantity; // This represents the stock quantity
-        private boolean isOutOfStock; //  field to indicate stock status
-
+        private QuantityDomain quantity; // This represents the stock quantity
         private String productId;
+        private String selectedSize; // Store selected size
+
+
 
         public ItemsDomain() {}
 
-        public ItemsDomain(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, int review, double rating, int NumberinCart, String categoryId, int quantity, String productId) {
+        public ItemsDomain(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, int review, double rating, int NumberinCart, String categoryId, QuantityDomain quantity, String productId, String selectedSize) {
             this.title = title;
             this.description = description;
             this.picUrl = picUrl;
@@ -31,14 +33,10 @@
             this.NumberinCart = NumberinCart;
             this.categoryId = categoryId;
             this.quantity = quantity;
-            this.isOutOfStock = quantity <= 0; // Determine stock status on creation
             this.productId = productId;
-
+            this.selectedSize = selectedSize;
         }
         //  check if an item can be added to the cart based on stock
-        public boolean canAddToCart(int quantity) {
-            return this.quantity >= quantity;
-        }
 
         // Getters and Setters for all fields
 
@@ -102,6 +100,10 @@
             return NumberinCart;
         }
 
+        public boolean isInStock() {
+            return quantity.getLARGE() >0 && quantity.getMEDIUM() >0 && quantity.getSMALL() >0;
+        }
+
         public void setNumberinCart(int NumberinCart) {
             this.NumberinCart = NumberinCart;
         }
@@ -114,20 +116,22 @@
             this.categoryId = categoryId;
         }
 
-        public int getQuantity() {
+        public QuantityDomain getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(int quantity) {
+        public void setQuantity(QuantityDomain quantity) {
             this.quantity = quantity;
-            this.isOutOfStock = quantity <= 0; // Update stock status
         }
 
-        public boolean isOutOfStock() {
-            return isOutOfStock;
+        public String getSelectedSize() {
+            return selectedSize;
         }
-        public void setOutOfStock(boolean b) {
+
+        public void setSelectedSize(String selectedSize) {
+            this.selectedSize = selectedSize;
         }
+
 
         public String getProductId() {
             return productId;
@@ -136,6 +140,7 @@
         public void setProductId(String productId) {
             this.productId = productId;
         }
+
 
         @Override
         public String toString() {
@@ -149,8 +154,7 @@
                     ", rating=" + rating +
                     ", NumberinCart=" + NumberinCart +
                     ", categoryId='" + categoryId + '\'' +
-                    ", quantity=" + quantity +
-                    ", isOutOfStock=" + isOutOfStock +
+                    ", quantity=" + quantity.toString() +
                     '}';
         }
 

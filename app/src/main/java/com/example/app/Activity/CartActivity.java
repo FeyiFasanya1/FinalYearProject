@@ -206,7 +206,7 @@
 
                 // Reduce stock quantity
                 Log.d("PRODUCT ID CHECK", itemDomain.getProductId());
-                reduceStock(itemDomain.getProductId(), itemDomain.getNumberinCart());
+                reduceStock(itemDomain.getProductId(), itemDomain.getSelectedSize(), itemDomain.getNumberinCart());
             }
 
 
@@ -226,15 +226,15 @@
             launchEmail(orderNumber);
         }
 
-        private void reduceStock(String productId, int quantity) {
-            database.child(productId).child("quantity").get().addOnCompleteListener(task -> {
+        private void reduceStock(String productId, String size, int quantity) {
+            database.child(productId).child("quantity").child(size).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
                     int currentStock = task.getResult().getValue(Integer.class);
                     Log.d("CURRENT STOCK", String.valueOf(currentStock));
                     if (currentStock >= quantity) {
-                        database.child(productId).child("quantity").setValue(currentStock - quantity);
+                        database.child(productId).child("quantity").child(size).setValue(currentStock - quantity);
                     } else {
-                        showToast("Insufficient stock for " + productId);
+                        showToast("Insufficient stock for " + size);
                     }
                 } else {
                     showToast("Error retrieving stock information");

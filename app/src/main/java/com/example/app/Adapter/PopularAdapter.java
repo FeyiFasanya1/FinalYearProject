@@ -52,7 +52,7 @@
             holder.binding.ratingBar.setRating((float) currentItem.getRating());
 
             // Check for item quantity (out of stock)
-            if (currentItem.getQuantity() == 0) {
+            if (currentItem.getQuantity().getTotalQuantity() == 0) {
                 holder.binding.outOfStockLabel.setVisibility(View.VISIBLE); // layout outOfStockLabel
                 holder.binding.priceTxt.setVisibility(View.GONE);
             } else {

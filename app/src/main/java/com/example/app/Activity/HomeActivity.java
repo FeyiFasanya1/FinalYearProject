@@ -70,16 +70,8 @@
                     if (snapshot.exists()) {
                         for (DataSnapshot issue : snapshot.getChildren()) {
                             ItemsDomain item = issue.getValue(ItemsDomain.class);
-                            Log.d("PRODUCT ID", item.getProductId());
-                            if (item != null) {
-                                // Check stock quantity
-                                if (item.getQuantity() <= 0) {
-                                    item.setOutOfStock(true); // ItemsDomain
-                                } else {
-                                    item.setOutOfStock(false);
-                                }
-                                items.add(item);
-                            }
+
+                            items.add(item);
                         }
                         if (!items.isEmpty()) {
                             binding.recyclerviewPopular.setLayoutManager(new GridLayoutManager(HomeActivity.this, 2));
@@ -216,12 +208,6 @@
                             Log.d("FirebaseData", "Item: " + issue.getValue());
                             ItemsDomain item = issue.getValue(ItemsDomain.class);
                             if (item != null) {
-                                // Check stock quantity
-                                if (item.getQuantity() <= 0) {
-                                    item.setOutOfStock(true);
-                                } else {
-                                    item.setOutOfStock(false);
-                                }
                                 filteredItems.add(item);
                             }
                         }
