@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="@id/item_title"
         app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
-    <!-- TextInputLayout for Quantity -->
+    <!-- TextInputLayout for Quantity 1 -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/quantityLayout"
         android:layout_width="60dp"
@@ -51,6 +51,46 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/item_quantity_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- TextInputLayout for Quantity 2 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/quantityLayout2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/quantityLayout"
+        app:layout_constraintTop_toTopOf="@id/quantityLayout"
+        android:layout_marginStart="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_quantity_value_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- TextInputLayout for Quantity 3 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/quantityLayout3"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/quantityLayout2"
+        app:layout_constraintTop_toTopOf="@id/quantityLayout"
+        android:layout_marginStart="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_quantity_value_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
