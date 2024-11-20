@@ -141,6 +141,11 @@
             this.productId = productId;
         }
 
+        public int getTotalQuantity() {
+            return quantity != null ? quantity.getTotalQuantity() : 0;
+        }
+
+
 
         @Override
         public String toString() {

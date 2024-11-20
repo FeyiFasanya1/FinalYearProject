@@ -73,4 +73,10 @@
         <item>ORDER SHIPPED</item>
         <item>ORDER DELIVERED</item>
     </string-array>
+
+    <string-array name="item_size_array">
+        <item>LARGE</item>
+        <item>MEDIUM</item>
+        <item>SMALL</item>
+    </string-array>
 </resources>

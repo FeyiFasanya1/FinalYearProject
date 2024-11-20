@@ -47,10 +47,16 @@
                 Intent intent = new Intent(StockActivity.this, AdminActivity.class);
                 startActivity(intent);
                 finish();
-            });
 
+                });
+
+            // Floating action button to upload item
+            binding.fab.setOnClickListener(v -> {
+                Intent intent = new Intent(StockActivity.this, UploadActivity.class);
+                startActivity(intent);
+            });
         }
-    
+
         private void loadProductData() {
 
             DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Items");

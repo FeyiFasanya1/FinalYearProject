@@ -38,7 +38,7 @@
 
             // Set the item details
             holder.binding.itemTitle.setText(currentItem.getTitle());
-            holder.binding.itemQuantityValue.setText(String.valueOf(currentItem.getQuantity()));
+            holder.binding.itemQuantityValue.setText(String.valueOf(currentItem.getTotalQuantity()));
             holder.binding.itemPriceValue.setText(String.valueOf(currentItem.getPrice()));
 
             // Load the image using Glide if available
