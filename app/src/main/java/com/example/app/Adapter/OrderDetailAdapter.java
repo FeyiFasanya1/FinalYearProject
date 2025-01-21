@@ -9,19 +9,17 @@
 
     import com.bumptech.glide.Glide;
     import com.example.app.databinding.ViewholderOrderDetailBinding;
-    import com.example.app.model.OrderInfo;
     import com.example.app.model.ProductInfo;
+
     import java.util.List;
 
     public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.Viewholder> {
-        private List <ProductInfo> productInfoList;
-
+        private List<ProductInfo> productInfoList;
         private Context context;
 
         public OrderDetailAdapter(List<ProductInfo> productInfoList) {
             this.productInfoList = productInfoList;
         }
-
 
         @NonNull
         @Override
@@ -33,18 +31,37 @@
 
         @Override
         public void onBindViewHolder(@NonNull OrderDetailAdapter.Viewholder holder, int position) {
+            // Bind product data to views
             holder.binding.orderTitle.setText(productInfoList.get(position).getTitle());
             holder.binding.itemQuantityValue.setText(String.valueOf(productInfoList.get(position).getItemQuantity()));
             holder.binding.itemPriceValue.setText('€' + String.valueOf(productInfoList.get(position).getPrice()));
 
+            // Load image using Glide
             Glide.with(context)
                     .load(productInfoList.get(position).getPicUrl())
                     .into(holder.binding.orderImage);
 
+            // Set up click listener for saveReviewBtn
+            holder.binding.saveReviewBtn.setOnClickListener(v -> {
+                String reviewText = holder.binding.orderReview.getText().toString();
+
+                if (reviewText.isEmpty()) {
+                    // Handle empty review input
+                    return;
+                }
+
+                // Save the review
+                saveReview(reviewText);
+            });
         }
+
         @Override
         public int getItemCount() {
             return productInfoList.size();
+        }
+
+        private void saveReview(String reviewText) {
+
         }
 
         public class Viewholder extends RecyclerView.ViewHolder {

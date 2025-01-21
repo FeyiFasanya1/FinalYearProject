@@ -7,6 +7,9 @@ public class ReviewDomain {
     private double rating;
     private int ItemId;
 
+    private String email;
+
+
     public ReviewDomain() {
     }
 
@@ -49,4 +52,15 @@ public class ReviewDomain {
     public void setItemId(int itemId) {
         ItemId = itemId;
     }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
+
+

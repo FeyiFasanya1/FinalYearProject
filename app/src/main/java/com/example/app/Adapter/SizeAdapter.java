@@ -1,12 +1,14 @@
     package com.example.app.Adapter;
 
     import android.content.Context;
+    import android.graphics.Paint;
     import android.view.LayoutInflater;
     import android.view.ViewGroup;
 
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.example.app.Domain.QuantityDomain;
     import com.example.app.R;
     import com.example.app.databinding.ViewholderSizeBinding;
 
@@ -14,6 +16,9 @@
 
     public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.Viewholder> {
         private ArrayList<String> items;
+
+        private QuantityDomain quantityDomain;
+
         private Context context;
         private int selectedPosition = -1;
         private int lastSelectedPosition = -1;
@@ -24,8 +29,9 @@
             void onSizeClick(String size);
         }
 
-        public SizeAdapter(ArrayList<String> items, SizeClickListener sizeClickListener) {
+        public SizeAdapter(ArrayList<String> items, QuantityDomain quantityDomain, SizeClickListener sizeClickListener) {
             this.items = items;
+            this.quantityDomain = quantityDomain;
             this.sizeClickListener = sizeClickListener;
         }
 
@@ -38,31 +44,46 @@
         }
 
         @Override
-        public void onBindViewHolder(@NonNull SizeAdapter.Viewholder holder, int position) {
+        public void onBindViewHolder(@NonNull Viewholder holder, int position) {
+            String size = items.get(position);
+            int stockQuantity = quantityDomain.getQuantityForSize(size);
+            
             holder.binding.sizeTxt.setText(items.get(position));
 
-            // Handle size selection on click
-            holder.binding.getRoot().setOnClickListener(v -> {
-                lastSelectedPosition = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
-                notifyItemChanged(lastSelectedPosition);
-                notifyItemChanged(selectedPosition);
+            if (stockQuantity > 0) {
+                // Enable and style available sizes
+                holder.binding.getRoot().setEnabled(true);
+                holder.binding.sizeTxt.setPaintFlags(0); // Remove strike-through
+                holder.binding.sizeLayout.setBackgroundResource(R.drawable.size_unselected);
+                holder.binding.sizeTxt.setTextColor(context.getResources().getColor(R.color.black));
 
-                // Notify the listener of the selected size
-                if (sizeClickListener != null) {
-                    sizeClickListener.onSizeClick(items.get(position)); // Pass the selected size back
-                }
-            });
+                // Handle click for available sizes
+                holder.binding.getRoot().setOnClickListener(v -> {
+                    int lastSelectedPosition = selectedPosition;
+                    selectedPosition = holder.getAdapterPosition();
+                    notifyItemChanged(lastSelectedPosition);
+                    notifyItemChanged(selectedPosition);
+
+                    // Notify listener
+                    if (sizeClickListener != null) {
+                        sizeClickListener.onSizeClick(size);
+                    }
+                });
+            } else {
+                // Disable and style out-of-stock sizes
+                holder.binding.getRoot().setEnabled(false);
+                holder.binding.sizeTxt.setPaintFlags(holder.binding.sizeTxt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.binding.sizeLayout.setBackgroundResource(R.drawable.size_unavailable);
+                holder.binding.sizeTxt.setTextColor(context.getResources().getColor(R.color.grey));
+            }
 
             // Highlight the selected size
             if (selectedPosition == holder.getAdapterPosition()) {
                 holder.binding.sizeLayout.setBackgroundResource(R.drawable.size_selected);
                 holder.binding.sizeTxt.setTextColor(context.getResources().getColor(R.color.green));
-            } else {
-                holder.binding.sizeLayout.setBackgroundResource(R.drawable.size_unselected);
-                holder.binding.sizeTxt.setTextColor(context.getResources().getColor(R.color.black));
             }
         }
+
 
         @Override
         public int getItemCount() {

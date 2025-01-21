@@ -9,6 +9,7 @@
     import androidx.recyclerview.widget.RecyclerView;
 
     import com.bumptech.glide.Glide;
+    import com.example.app.Domain.QuantityDomain;
     import com.example.app.databinding.ViewholderStockBinding;
     import com.example.app.Domain.ItemsDomain;
     import com.google.firebase.database.DatabaseReference;
@@ -38,8 +39,15 @@
 
             // Set the item details
             holder.binding.itemTitle.setText(currentItem.getTitle());
-            holder.binding.itemQuantityValue.setText(String.valueOf(currentItem.getTotalQuantity()));
             holder.binding.itemPriceValue.setText(String.valueOf(currentItem.getPrice()));
+
+            // Display quantity for each size in corresponding fields
+            QuantityDomain quantity = currentItem.getQuantity();
+            if (quantity != null) {
+                holder.binding.itemQuantityValue.setText(String.valueOf(quantity.getLARGE()));
+                holder.binding.itemQuantityValue2.setText(String.valueOf(quantity.getMEDIUM()));
+                holder.binding.itemQuantityValue3.setText(String.valueOf(quantity.getSMALL()));
+            }
 
             // Load the image using Glide if available
             if (!currentItem.getPicUrl().isEmpty()) {
@@ -51,13 +59,21 @@
             // Handle the update button click
             holder.binding.updateBtn.setOnClickListener(v -> {
                 // Get updated quantity and price values from EditText fields
-                String newQuantityStr = holder.binding.itemQuantityValue.getText().toString();
+                String newLargeQuantityStr = holder.binding.itemQuantityValue.getText().toString();
+                String newMediumQuantityStr = holder.binding.itemQuantityValue2.getText().toString();
+                String newSmallQuantityStr = holder.binding.itemQuantityValue3.getText().toString();
                 String newPriceStr = holder.binding.itemPriceValue.getText().toString();
 
-                if (!newQuantityStr.isEmpty() && !newPriceStr.isEmpty()) {
+                if (!newLargeQuantityStr.isEmpty() && !newMediumQuantityStr.isEmpty() &&
+                        !newSmallQuantityStr.isEmpty() && !newPriceStr.isEmpty()) {
                     // Parse the input values
-                    int newQuantity = Integer.parseInt(newQuantityStr);
+                    int newLargeQuantity = Integer.parseInt(newLargeQuantityStr);
+                    int newMediumQuantity = Integer.parseInt(newMediumQuantityStr);
+                    int newSmallQuantity = Integer.parseInt(newSmallQuantityStr);
                     double newPrice = Double.parseDouble(newPriceStr);
+
+                    // Creating an updated QuantityDomain object
+                    QuantityDomain newQuantity = new QuantityDomain(newSmallQuantity, newMediumQuantity, newLargeQuantity);
 
                     // Call the method to update the database
                     updateItemInDatabase(currentItem.getProductId(), newQuantity, newPrice);
@@ -65,7 +81,7 @@
             });
         }
 
-        private void updateItemInDatabase(String productId, int newQuantity, double newPrice) {
+        private void updateItemInDatabase(String productId, QuantityDomain newQuantity, double newPrice) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Items").child(productId);
 
             // Update quantity and price in Firebase

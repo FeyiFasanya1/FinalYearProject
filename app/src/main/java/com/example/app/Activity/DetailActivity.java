@@ -14,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.app.Adapter.SizeAdapter;
 import com.example.app.Adapter.SliderAdapter;
 import com.example.app.Domain.ItemsDomain;
+import com.example.app.Domain.QuantityDomain;
 import com.example.app.Domain.SliderItems;
 import com.example.app.Fragment.DescriptionFragment;
 import com.example.app.Fragment.ReviewFragment;
 import com.example.app.Fragment.SoldFragment;
 import com.example.app.Helper.ManagmentCart;
 import com.example.app.databinding.ActivityDetailBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +56,8 @@ public class DetailActivity extends BaseActivity {
         list.add("MEDIUM");
         list.add("LARGE");
 
-        binding.recyclerSize.setAdapter(new SizeAdapter(list, size -> selectedSize = size));
+        QuantityDomain quantity = object.getQuantity();
+        binding.recyclerSize.setAdapter(new SizeAdapter(list, quantity, size -> selectedSize = size));
         binding.recyclerSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
     }
@@ -83,10 +87,24 @@ public class DetailActivity extends BaseActivity {
                 return;
             }
 
-            object.setNumberinCart(numberOrder);
-            object.setSelectedSize(selectedSize); // Set selected size for the item
-            managmentCart.insertItem(object);
-            Toast.makeText(this, "Added to Cart", Toast.LENGTH_SHORT).show();
+            DatabaseReference itemRef = FirebaseDatabase.getInstance().getReference("Items")
+                    .child(object.getProductId()).child("quantity").child(selectedSize);
+
+            itemRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    int currentStock = task.getResult().getValue(Integer.class);
+                    if (currentStock > 0) {
+                        object.setNumberinCart(numberOrder);
+                        object.setSelectedSize(selectedSize); // Set selected size for the item
+                        managmentCart.insertItem(object);
+                        Toast.makeText(this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Size " + selectedSize + " is out of stock", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Error checking stock", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
         binding.backBtn.setOnClickListener(v -> finish());
     }
@@ -94,16 +112,19 @@ public class DetailActivity extends BaseActivity {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        DescriptionFragment tab1 = new DescriptionFragment();
+        // Description Tab
+        DescriptionFragment descriptionFragment = new DescriptionFragment();
+        Bundle descriptionBundle = new Bundle();
+        descriptionBundle.putString("description", object.getDescription());
+        descriptionFragment.setArguments(descriptionBundle);
+        adapter.addFrag(descriptionFragment, "Descriptions");
 
-        Bundle bundle1 = new Bundle();
-
-
-        bundle1.putString("description", object.getDescription());
-
-        tab1.setArguments(bundle1);
-
-        adapter.addFrag(tab1,"Descriptions");
+        // Reviews Tab
+        ReviewFragment reviewFragment = new ReviewFragment();
+        Bundle reviewBundle = new Bundle();
+        reviewBundle.putString("itemId", object.getProductId()); // Pass product ID to load reviews specific to this item
+        reviewFragment.setArguments(reviewBundle);
+        adapter.addFrag(reviewFragment, "Reviews");
 
         binding.viewpager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewpager);
