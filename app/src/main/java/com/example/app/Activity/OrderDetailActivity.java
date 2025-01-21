@@ -48,6 +48,8 @@
                 binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
                 initOrderDetail(orderId);
 
+
+                //not recogising from 'order detail viewholder'
                 binding.saveReviewBtn.setOnClickListener(v -> {
                     String reviewText = binding.orderReview.getText().toString();
 
@@ -93,6 +95,7 @@
                 reviewRef.setValue(reviewText).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Review saved successfully", Toast.LENGTH_SHORT).show();
+                        // is not recognising order review field from 'order detail viewholder'
                         binding.orderReview.setText(""); // Clear input field
                         // Notify ReviewFragment of the new review
                         updateReviewFragment(orderId);
@@ -103,7 +106,9 @@
             }
 
 
-            private void updateReviewFragment(String orderId) {
+
+           //trying to update fragment
+           private void updateReviewFragment(String orderId) {
                 ReviewFragment reviewFragment = (ReviewFragment) getSupportFragmentManager()
                         .findFragmentByTag("Reviews");
                 if (reviewFragment != null) {
