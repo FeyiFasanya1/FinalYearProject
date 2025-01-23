@@ -3,10 +3,12 @@
         import android.content.Intent;
         import android.os.Bundle;
         import android.util.Log;
+        import android.view.LayoutInflater;
         import android.view.View;
         import android.widget.ImageView;
 
         import com.example.app.Fragment.ReviewFragment;
+        import com.example.app.databinding.ActivityOrdersDetailBinding;
         import com.example.app.databinding.ViewholderOrderDetailBinding;
         import android.widget.Toast;
 
@@ -16,7 +18,6 @@
 
         import com.example.app.Adapter.OrderDetailAdapter;
         import com.example.app.R;
-        import com.example.app.databinding.ActivityOrdersDetailBinding;
         import com.example.app.model.OrderInfo;
         import com.example.app.model.ProductInfo;
         import com.google.firebase.database.DataSnapshot;
@@ -31,9 +32,6 @@
         public class OrderDetailActivity extends AppCompatActivity {
 
             private ActivityOrdersDetailBinding binding;
-
-            private OrderInfo orderInfo;
-
             private OrderDetailAdapter orderDetailAdapter;
 
             @Override
@@ -41,26 +39,12 @@
                 super.onCreate(savedInstanceState);
                 binding = ActivityOrdersDetailBinding.inflate(getLayoutInflater());
                 setContentView(binding.getRoot());
-                orderInfo = new OrderInfo();
+
                 Intent intent = getIntent();
                 String orderId = intent.getStringExtra("ORDER_ID");
 
                 binding.recyclerViewOfficial.setLayoutManager(new LinearLayoutManager(this));
                 initOrderDetail(orderId);
-
-
-                //not recogising from 'order detail viewholder'
-                binding.saveReviewBtn.setOnClickListener(v -> {
-                    String reviewText = binding.orderReview.getText().toString();
-
-                    if (reviewText.isEmpty()) {
-                        Toast.makeText(this, "Please enter a review", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Save the review to Firebase
-                    saveReview(orderId, reviewText);
-                });
 
                 ImageView backBtn = findViewById(R.id.backBtn3);
                 backBtn.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -74,7 +58,7 @@
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            orderInfo = snapshot.getValue(OrderInfo.class);
+                            OrderInfo orderInfo = snapshot.getValue(OrderInfo.class);
                             if (orderInfo != null && orderInfo.getProductInfoList() != null) {
                                 orderDetailAdapter = new OrderDetailAdapter(orderInfo.getProductInfoList());
                                 binding.recyclerViewOfficial.setAdapter(orderDetailAdapter);
@@ -88,31 +72,5 @@
                         binding.progressBarOffical.setVisibility(View.GONE);
                     }
                 });
-            }
-
-            private void saveReview(String orderId, String reviewText) {
-                DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("Reviews").child(orderId);
-                reviewRef.setValue(reviewText).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Review saved successfully", Toast.LENGTH_SHORT).show();
-                        // is not recognising order review field from 'order detail viewholder'
-                        binding.orderReview.setText(""); // Clear input field
-                        // Notify ReviewFragment of the new review
-                        updateReviewFragment(orderId);
-                    } else {
-                        Toast.makeText(this, "Failed to save review", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-
-
-           //trying to update fragment
-           private void updateReviewFragment(String orderId) {
-                ReviewFragment reviewFragment = (ReviewFragment) getSupportFragmentManager()
-                        .findFragmentByTag("Reviews");
-                if (reviewFragment != null) {
-                    reviewFragment.refreshReviews(orderId);
-                }
             }
         }

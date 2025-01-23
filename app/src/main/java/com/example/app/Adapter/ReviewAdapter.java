@@ -17,11 +17,17 @@ import java.util.ArrayList;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.Viewholder> {
     ArrayList<ReviewDomain> items;
 
+    ArrayList<ReviewDomain> reviews;
+
+
+
     Context context;
 
     public ReviewAdapter(ArrayList<ReviewDomain> items) {
         this.items = items;
     }
+
+
 
     @NonNull
     @Override

@@ -5,6 +5,9 @@ public class ReviewDomain {
     private String Description;
     private String PicUrl;
     private double rating;
+    private String reviewText;
+
+
     private int ItemId;
 
     private String email;
@@ -61,6 +64,15 @@ public class ReviewDomain {
     public void setEmail(String email) {
         this.email = email;
     }
+    public String getReviewText() {
+        return reviewText;
+    }
+
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
+    }
 }
+
+
 
 

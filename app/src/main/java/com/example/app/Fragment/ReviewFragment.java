@@ -86,7 +86,7 @@
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             reviews.clear();
                             if (snapshot.exists()) {
-                                String reviewText = snapshot.getValue(String.class);
+                                String reviewText = String.valueOf(snapshot.getValue(ReviewDomain.class));
                                 if (reviewText != null) {
                                     reviews.add(reviewText);
                                 }
