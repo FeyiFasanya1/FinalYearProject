@@ -8,7 +8,7 @@ public class ReviewDomain {
     private String reviewText;
 
 
-    private int ItemId;
+    private String productId;
 
     private String email;
 
@@ -48,12 +48,12 @@ public class ReviewDomain {
         this.rating = rating;
     }
 
-    public int getItemId() {
-        return ItemId;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setItemId(int itemId) {
-        ItemId = itemId;
+    public void setProductId(String itemId) {
+        productId = productId;
     }
 
 
