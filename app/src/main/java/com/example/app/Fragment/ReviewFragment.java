@@ -86,9 +86,11 @@
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             reviews.clear();
                             if (snapshot.exists()) {
-                                String reviewText = String.valueOf(snapshot.getValue(ReviewDomain.class));
-                                if (reviewText != null) {
-                                    reviews.add(reviewText);
+                                for (DataSnapshot issue : snapshot.getChildren()) {
+                                    ReviewDomain review = issue.getValue(ReviewDomain.class);
+                                    if (review != null) {
+                                        reviews.add(review);
+                                    }
                                 }
                             }
                             // Update RecyclerView with reviews
