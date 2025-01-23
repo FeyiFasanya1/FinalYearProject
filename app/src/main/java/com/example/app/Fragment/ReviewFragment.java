@@ -79,7 +79,7 @@
 
                 public void refreshReviews(String orderId) {
                     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Reviews").child(orderId);
-                    ArrayList<String> reviews = new ArrayList<>();
+                    ArrayList<ReviewDomain> reviews = new ArrayList<>();
 
                     myRef.addValueEventListener(new ValueEventListener() {
                         @Override
