@@ -60,6 +60,12 @@
                         if (snapshot.exists()) {
                             OrderInfo orderInfo = snapshot.getValue(OrderInfo.class);
                             if (orderInfo != null && orderInfo.getProductInfoList() != null) {
+
+                                for (ProductInfo product : orderInfo.getProductInfoList()) {
+                                    Log.d("OrderDetailActivity", "Product Title: " + product.getTitle());
+                                    Log.d("OrderDetailActivity", "Product Pic URL: " + product.getPicUrl());
+                                    Log.d("OrderDetailActivity", "Product ID: " + product.getProductId());
+                                }
                                 orderDetailAdapter = new OrderDetailAdapter(orderInfo.getProductInfoList());
                                 binding.recyclerViewOfficial.setAdapter(orderDetailAdapter);
                             }

@@ -52,8 +52,8 @@ public class ReviewDomain {
         return productId;
     }
 
-    public void setProductId(String itemId) {
-        productId = productId;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
 

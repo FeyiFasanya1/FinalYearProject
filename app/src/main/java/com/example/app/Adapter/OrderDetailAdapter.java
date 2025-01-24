@@ -1,6 +1,7 @@
         package com.example.app.Adapter;
 
         import android.content.Context;
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.ViewGroup;
         import android.widget.Toast;
@@ -36,6 +37,13 @@
 
             @Override
             public void onBindViewHolder(@NonNull Viewholder holder, int position) {
+                ProductInfo product = productInfoList.get(position);
+
+                // Debugging: Log product info
+                Log.d("BindViewHolder", "Product Title: " + product.getTitle());
+                Log.d("BindViewHolder", "Product Pic URL: " + product.getPicUrl());
+                Log.d("BindViewHolder", "Product ID: " + product.getProductId());
+
                 // Bind product data to views
                 holder.binding.orderTitle.setText(productInfoList.get(position).getTitle());
                 holder.binding.itemQuantityValue.setText(String.valueOf(productInfoList.get(position).getItemQuantity()));
@@ -45,6 +53,11 @@
                 Glide.with(context)
                         .load(productInfoList.get(position).getPicUrl())
                         .into(holder.binding.orderImage);
+
+                // Debugging: Log product info
+                Log.d("BindViewHolder", "Product Title: " + product.getTitle());
+                Log.d("BindViewHolder", "Product Pic URL: " + product.getPicUrl());
+                Log.d("BindViewHolder", "Product ID: " + product.getProductId());
 
                 // Set up click listener for saveReviewBtn
                 holder.binding.saveReviewBtn.setOnClickListener(v -> {
@@ -57,19 +70,28 @@
                     }
 
                     // Save the review
-                    saveReview(reviewText, new ItemsDomain());
+                    saveReview(reviewText, product);
                 });
             }
-            private void saveReview(String reviewText, ItemsDomain itemsDomain) {
+            private void saveReview(String reviewText, ProductInfo product) {
                 DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("Review");
 
                 // Create a ReviewDomain object
                 ReviewDomain review = new ReviewDomain();
                 review.setReviewText(reviewText);
-                review.setName(itemsDomain.getTitle());
+//                review.setName(itemsDomain.getTitle());
 //                review.setPicUrl(itemsDomain.getPicUrl());
-                  review.setProductId(itemsDomain.getProductId()); // Set productId as an attribute
+                  //review.setProductId(itemsDomain.getProductId());
+                review.setProductId(product.getProductId());
+                  // Set productId as an attribute
 //                review.setItemId(productInfo.getId()); // Optional: if you also want to track itemId
+
+
+                // Debugging: Log all values being sent to Firebase
+                Log.d("SaveReview", "Review Text: " + reviewText);
+                Log.d("SaveReview", "Product Name: " + product.getTitle());
+                Log.d("SaveReview", "Product Pic URL: " + product.getPicUrl());
+                Log.d("SaveReview", "Product ID: " + product.getProductId());
 
                 // Push the review to the database
                 reviewRef.push().setValue(review).addOnCompleteListener(task -> {
