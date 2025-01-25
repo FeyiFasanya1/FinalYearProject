@@ -20,6 +20,8 @@
 
         String id;
 
+        String productId;
+
 
         public String getAddress() {
             return address;
@@ -108,6 +110,14 @@
 
         public void setOrderQuantity(String orderQuantity) {
             OrderQuantity = orderQuantity;
+        }
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
         }
 
 

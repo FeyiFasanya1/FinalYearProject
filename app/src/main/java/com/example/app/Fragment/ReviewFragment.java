@@ -4,6 +4,7 @@
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
+    import android.widget.Toast;
 
     import androidx.annotation.NonNull;
     import androidx.annotation.Nullable;
@@ -23,8 +24,10 @@
 
     import java.util.ArrayList;
 
-
     public class ReviewFragment extends Fragment {
+
+        private ArrayList<ReviewDomain> reviewList;
+        private ReviewAdapter reviewAdapter;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -32,8 +35,7 @@
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             return inflater.inflate(R.layout.fragment_review, container, false);
         }
@@ -42,71 +44,51 @@
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            String itemId = getArguments() != null ? getArguments().getString("itemId") : null;
-            if (itemId != null) {
-                initList(view, itemId);
+            // Retrieve the productId passed to the fragment
+            String productId = getArguments() != null ? getArguments().getString("productId") : null;
+
+            if (productId != null) {
+                setupRecyclerView(view);
+                fetchReviews(productId);
+            } else {
+                Toast.makeText(getContext(), "No productId provided", Toast.LENGTH_SHORT).show();
             }
         }
 
-        private void initList(View view, String itemId) {
-            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Review");
-            ArrayList<ReviewDomain> list = new ArrayList<>();
-            Query query = myRef.orderByChild("ItemId").equalTo(itemId);
+        private void setupRecyclerView(View view) {
+            RecyclerView recyclerView = view.findViewById(R.id.reviewView);
+            reviewList = new ArrayList<>();
+            reviewAdapter = new ReviewAdapter(reviewList);
+            recyclerView.setAdapter(reviewAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+        private void fetchReviews(String productId) {
+            DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("Review");
+
+            // Query reviews where productId matches
+            Query query = reviewRef.orderByChild("productId").equalTo(productId);
+            query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    reviewList.clear(); // Clear old data
                     if (snapshot.exists()) {
-                        for (DataSnapshot issue : snapshot.getChildren()) {
-                            ReviewDomain review = issue.getValue(ReviewDomain.class);
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            ReviewDomain review = data.getValue(ReviewDomain.class);
                             if (review != null) {
-                                list.add(review);
+                                reviewList.add(review); // Add review to the list
                             }
                         }
-                        RecyclerView reviewRecyclerView = view.findViewById(R.id.reviewView);
-                        if (!list.isEmpty()) {
-                            ReviewAdapter adapter = new ReviewAdapter(list);
-                            reviewRecyclerView.setAdapter(adapter);
-                            reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                        }
+                        reviewAdapter.notifyDataSetChanged(); // Update the RecyclerView
+                    } else {
+                        Toast.makeText(getContext(), "No reviews found for this product", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-
-                public void refreshReviews(String orderId) {
-                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Reviews").child(orderId);
-                    ArrayList<ReviewDomain> reviews = new ArrayList<>();
-
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            reviews.clear();
-                            if (snapshot.exists()) {
-                                for (DataSnapshot issue : snapshot.getChildren()) {
-                                    ReviewDomain review = issue.getValue(ReviewDomain.class);
-                                    if (review != null) {
-                                        reviews.add(review);
-                                    }
-                                }
-                            }
-                            // Update RecyclerView with reviews
-                            RecyclerView reviewRecyclerView = getView().findViewById(R.id.reviewView);
-                            reviewRecyclerView.setAdapter(new ReviewAdapter(reviews));
-                            reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    Toast.makeText(getContext(), "Failed to load reviews: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }

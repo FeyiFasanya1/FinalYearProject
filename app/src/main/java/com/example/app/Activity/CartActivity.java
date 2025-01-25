@@ -202,6 +202,7 @@
                 productInfo.setPicUrl(itemDomain.getPicUrl().get(0));
                 productInfo.setTitle(itemDomain.getTitle());
                 productInfo.setItemQuantity(itemDomain.getNumberinCart());
+                productInfo.setProductId(itemDomain.getProductId());
                 productInfoList.add(productInfo);
 
                 // Reduce stock quantity
@@ -217,6 +218,7 @@
             orderInfo.setEmail("C20489426@gmail.com");
             orderInfo.setAddress(orderInfo.getAddress());
             orderInfo.setTotalPrice(total);
+            orderInfo.setProductId(orderInfo.getProductId());
 
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             orderInfo.setUserId(userId);

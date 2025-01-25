@@ -12,6 +12,8 @@ public class ReviewDomain {
 
     private String email;
 
+    private String orderId;
+
 
     public ReviewDomain() {
     }
@@ -70,6 +72,14 @@ public class ReviewDomain {
 
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }
 

@@ -58,15 +58,19 @@
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            // Log the raw data snapshot to check if productId is present
+                            Log.d("FirebaseData", "Snapshot: " + snapshot.toString());
+
+
+                            // Map the snapshot data to OrderInfo object
                             OrderInfo orderInfo = snapshot.getValue(OrderInfo.class);
                             if (orderInfo != null && orderInfo.getProductInfoList() != null) {
 
                                 for (ProductInfo product : orderInfo.getProductInfoList()) {
-                                    Log.d("OrderDetailActivity", "Product Title: " + product.getTitle());
-                                    Log.d("OrderDetailActivity", "Product Pic URL: " + product.getPicUrl());
-                                    Log.d("OrderDetailActivity", "Product ID: " + product.getProductId());
+                                    Log.d("ProductInfo", "Product ID: " + product.getProductId());
+                                    Log.d("ProductInfo", "Product Title: " + product.getTitle());
                                 }
-                                orderDetailAdapter = new OrderDetailAdapter(orderInfo.getProductInfoList());
+                                orderDetailAdapter = new OrderDetailAdapter(orderInfo.getProductInfoList(), orderId);
                                 binding.recyclerViewOfficial.setAdapter(orderDetailAdapter);
                             }
                             binding.progressBarOffical.setVisibility(View.GONE);
