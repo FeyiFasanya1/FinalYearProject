@@ -36,7 +36,7 @@
 
 
             // Determine if the user is an admin
-            boolean isAdmin = UserAuth.getInstance().getUser().isAdmin();
+            boolean isAdmin = UserAuth.getInstance().getUser() != null && UserAuth.getInstance().getUser().isAdmin();
 
             orders = new ArrayList<>();
             ordersAdapter = new OrdersAdapter(orders, new OrdersAdapter.OrdersCallback() {

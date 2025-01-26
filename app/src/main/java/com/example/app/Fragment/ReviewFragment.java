@@ -67,11 +67,12 @@
         }
 
         private void fetchReviews(String productId) {
-            DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("Review");
+            DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("Review").child(productId);
+
 
             // Query reviews where productId matches
-            Query query = reviewRef.orderByChild("productId").equalTo(productId);
-            query.addValueEventListener(new ValueEventListener() {
+//            Query query = reviewRef.equalTo(productId);
+            reviewRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     reviewList.clear(); // Clear old data
@@ -83,13 +84,11 @@
                             // Deserialize into ReviewDomain
                             ReviewDomain review = data.getValue(ReviewDomain.class);
                             if (review != null) {
-                                Log.d("ReviewFragment", "Review added: " + review.getReviewText());
+//                                Log.d("ReviewFragment", "Review added: " + review.getReviewText());
                                 reviewList.add(review); // Add review to the list
                             }
                         }
                         reviewAdapter.notifyDataSetChanged(); // Update the RecyclerView
-                    } else {
-                        Toast.makeText(getContext(), "No reviews found for this product", Toast.LENGTH_SHORT).show();
                     }
                 }
 
