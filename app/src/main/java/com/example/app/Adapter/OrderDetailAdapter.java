@@ -43,10 +43,6 @@
         public void onBindViewHolder(@NonNull Viewholder holder, int position) {
             ProductInfo product = productInfoList.get(position);
 
-            // Debugging: Log product info
-            Log.d("BindViewHolder", "Product Title: " + product.getTitle());
-            Log.d("BindViewHolder", "Product Pic URL: " + product.getPicUrl());
-            Log.d("BindViewHolder", "Product ID: " + product.getProductId());
 
             // Bind product data to views
             holder.binding.orderTitle.setText(product.getTitle());
@@ -99,7 +95,6 @@
         private void saveReview(String reviewText, ProductInfo product, String orderId) {
             DatabaseReference reviewRef = FirebaseDatabase.getInstance()
                     .getReference("Review")
-                    .child(orderId) // Associate review with the specific orderId
                     .child(product.getProductId()); // Associate review with the specific productId
 
             // Create a ReviewDomain object
@@ -108,11 +103,6 @@
             review.setProductId(product.getProductId());
             review.setOrderId(orderId);
 
-
-            // Debugging: Log review details
-            Log.d("SaveReview", "Review Text: " + reviewText);
-            Log.d("SaveReview", "Product ID: " + product.getProductId());
-            Log.d("SaveReview", "Order ID: " + orderId);
 
             // Push the review to the database
             reviewRef.push().setValue(review).addOnCompleteListener(task -> {

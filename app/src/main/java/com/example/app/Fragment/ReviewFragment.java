@@ -77,16 +77,19 @@
                     reviewList.clear(); // Clear old data
                     if (snapshot.exists()) {
                         for (DataSnapshot data : snapshot.getChildren()) {
-                            ReviewDomain review = data.getValue(ReviewDomain.class);
+                            // Debugging: Log each child to inspect its structure
+                            Log.d("ReviewFragment", "Review data: " + data.toString());
 
+                            // Deserialize into ReviewDomain
+                            ReviewDomain review = data.getValue(ReviewDomain.class);
                             if (review != null) {
-                                // Use only the fields required for the current functionality
-                                String reviewText = data.child("reviewText").getValue(String.class);
-                                review.setReviewText(reviewText); // Set only reviewText
-                                reviewList.add(review);
+                                Log.d("ReviewFragment", "Review added: " + review.getReviewText());
+                                reviewList.add(review); // Add review to the list
                             }
                         }
                         reviewAdapter.notifyDataSetChanged(); // Update the RecyclerView
+                    } else {
+                        Toast.makeText(getContext(), "No reviews found for this product", Toast.LENGTH_SHORT).show();
                     }
                 }
 
