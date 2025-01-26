@@ -60,7 +60,8 @@
                     String email, password;
                     email = String.valueOf(editTextEmail.getText());
                     password = String.valueOf(editTextPassword.getText());
-
+//                      email = "user1@gmail.com";
+//                      password = "123456";
 
                     if (TextUtils.isEmpty(email)) {
                         Toast.makeText(MainActivity.this, "Enter Email", Toast.LENGTH_SHORT).show();

@@ -57,7 +57,6 @@
             // Load existing reviews for the specific orderId and productId
             DatabaseReference reviewRef = FirebaseDatabase.getInstance()
                     .getReference("Review")
-                    .child(orderId) // Use the orderId
                     .child(product.getProductId()); // Use the productId
 
             reviewRef.addValueEventListener(new ValueEventListener() {
@@ -65,8 +64,13 @@
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     StringBuilder reviews = new StringBuilder();
                     for (DataSnapshot reviewSnapshot : snapshot.getChildren()) {
-                        String reviewText = reviewSnapshot.child("reviewText").getValue(String.class);
-                        reviews.append("- ").append(reviewText).append("\n");
+                        ReviewDomain reviewDomain = reviewSnapshot.getValue(ReviewDomain.class);
+                         Log.d("Review", reviewDomain.toString());
+
+                        if (reviewDomain.getOrderId().equals(orderId)) {
+                            String reviewText = reviewSnapshot.child("reviewText").getValue(String.class);
+                            reviews.append(" ").append(reviewText).append("\n");
+                        }
                     }
 
                     // Display reviews in the TextView
