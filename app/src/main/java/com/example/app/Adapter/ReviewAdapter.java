@@ -1,65 +1,73 @@
-package com.example.app.Adapter;
+    package com.example.app.Adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+    import android.content.Context;
+    import android.view.LayoutInflater;
+    import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+    import androidx.annotation.NonNull;
+    import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
-import com.example.app.Domain.ReviewDomain;
-import com.example.app.databinding.ViewholderReviewBinding;
+    import com.bumptech.glide.Glide;
+    import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
+    import com.example.app.Domain.ReviewDomain;
+    import com.example.app.R;
+    import com.example.app.databinding.ViewholderReviewBinding;
 
-import java.util.ArrayList;
+    import java.util.ArrayList;
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.Viewholder> {
-    ArrayList<ReviewDomain> items;
+    public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.Viewholder> {
 
-    ArrayList<ReviewDomain> reviews;
+        // List of reviews to display
+        private ArrayList<ReviewDomain> reviews;
+        private Context context;
 
+        // Constructor to initialize the review list
+        public ReviewAdapter(ArrayList<ReviewDomain> reviews) {
+            this.reviews = reviews;
+        }
 
+        @NonNull
+        @Override
+        public ReviewAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Inflate the custom ViewHolder layout using View Binding
+            context = parent.getContext();
+            ViewholderReviewBinding binding = ViewholderReviewBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new Viewholder(binding);
+        }
 
-    Context context;
+        @Override
+        public void onBindViewHolder(@NonNull ReviewAdapter.Viewholder holder, int position) {
+            // Get the current review item
+            ReviewDomain review = reviews.get(position);
 
-    public ReviewAdapter(ArrayList<ReviewDomain> items) {
-        this.items = items;
-    }
+            // Bind the reviewText to the descTxt field
+            holder.binding.descTxt.setText(review.getReviewText());
 
+            // Optionally handle image (if picUrl is present in the review object)
+            if (review.getPicUrl() != null && !review.getPicUrl().isEmpty()) {
+                Glide.with(context)
+                        .load(review.getPicUrl())
+                        .transform(new GranularRoundedCorners(100, 100, 100, 100))
+                        .into(holder.binding.pic);
+            } else {
+                // Optionally, hide the ImageView or show a placeholder if no image is provided
+                holder.binding.pic.setImageResource(R.drawable.baseline_person_2); // Replace with your placeholder image
 
+            }
+        }
 
-    @NonNull
-    @Override
-    public ReviewAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        ViewholderReviewBinding binding = ViewholderReviewBinding.inflate(LayoutInflater.from(context), parent, false);
-        return new Viewholder(binding);
-    }
+        @Override
+        public int getItemCount() {
+            return reviews.size();
+        }
 
-    @Override
-    public void onBindViewHolder(@NonNull ReviewAdapter.Viewholder holder, int position) {
-        holder.binding.nameTxt.setText(items.get(position).getName());
-        holder.binding.descTxt.setText(items.get(position).getDescription());
-        holder.binding.ratingTxt.setText("" + items.get(position).getRating());
+        // ViewHolder class
+        public class Viewholder extends RecyclerView.ViewHolder {
+            ViewholderReviewBinding binding;
 
-        Glide.with(context)
-                .load(items.get(position).getPicUrl())
-                .transform(new GranularRoundedCorners(100, 100, 100, 100))
-                .into(holder.binding.pic);
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    public class Viewholder extends RecyclerView.ViewHolder {
-        ViewholderReviewBinding binding;
-
-        public Viewholder(ViewholderReviewBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+            public Viewholder(ViewholderReviewBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
         }
     }
-}

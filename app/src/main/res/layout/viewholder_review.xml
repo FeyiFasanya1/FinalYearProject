@@ -24,7 +24,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/pic"
         app:layout_constraintStart_toEndOf="@+id/pic"
-        app:layout_constraintTop_toTopOf="@+id/pic" />
+        app:layout_constraintTop_toTopOf="@+id/pic"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/descTxt"
@@ -46,7 +47,8 @@
         android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/nameTxt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nameTxt" />
+        app:layout_constraintTop_toTopOf="@+id/nameTxt"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/imageView6"
@@ -56,5 +58,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/ratingTxt"
         app:layout_constraintEnd_toStartOf="@+id/ratingTxt"
         app:layout_constraintTop_toTopOf="@+id/ratingTxt"
-        app:srcCompat="@drawable/star" />
+        app:srcCompat="@drawable/star"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

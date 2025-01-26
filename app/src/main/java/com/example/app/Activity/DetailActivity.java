@@ -3,6 +3,8 @@ package com.example.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
+import android.util.Log;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -122,7 +124,12 @@ public class DetailActivity extends BaseActivity {
         // Reviews Tab
         ReviewFragment reviewFragment = new ReviewFragment();
         Bundle reviewBundle = new Bundle();
-        reviewBundle.putString("itemId", object.getProductId()); // Pass product ID to load reviews specific to this item
+
+        // Log the productId before passing it
+        String productId = object.getProductId();
+        Log.d("DetailActivity", "Passing productId to ReviewFragment: " + productId);
+
+        reviewBundle.putString("productId", object.getProductId()); // Pass product ID to load reviews specific to this item
         reviewFragment.setArguments(reviewBundle);
         adapter.addFrag(reviewFragment, "Reviews");
 

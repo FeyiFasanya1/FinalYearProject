@@ -1,6 +1,7 @@
     package com.example.app.Fragment;
 
     import android.os.Bundle;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -47,6 +48,8 @@
             // Retrieve the productId passed to the fragment
             String productId = getArguments() != null ? getArguments().getString("productId") : null;
 
+            Log.d("ReviewFragment", "Received productId: " + productId);
+
             if (productId != null) {
                 setupRecyclerView(view);
                 fetchReviews(productId);
@@ -75,13 +78,15 @@
                     if (snapshot.exists()) {
                         for (DataSnapshot data : snapshot.getChildren()) {
                             ReviewDomain review = data.getValue(ReviewDomain.class);
+
                             if (review != null) {
-                                reviewList.add(review); // Add review to the list
+                                // Use only the fields required for the current functionality
+                                String reviewText = data.child("reviewText").getValue(String.class);
+                                review.setReviewText(reviewText); // Set only reviewText
+                                reviewList.add(review);
                             }
                         }
                         reviewAdapter.notifyDataSetChanged(); // Update the RecyclerView
-                    } else {
-                        Toast.makeText(getContext(), "No reviews found for this product", Toast.LENGTH_SHORT).show();
                     }
                 }
 
