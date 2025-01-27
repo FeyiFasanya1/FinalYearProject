@@ -1,122 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/square_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    tools:context=".Activity.OrderDetailActivity">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
 
-    <!-- Image -->
-    <ImageView
-        android:id="@+id/order_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
-    <!-- Title -->
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/order_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- Date -->
+        <!-- Title -->
+        <TextView
+            android:id="@+id/order_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Order Title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/order_image"
+            app:layout_constraintTop_toTopOf="@id/order_image" />
 
-    <TextView
-        android:id="@+id/order_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Order Title"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/order_image"
-        app:layout_constraintTop_toTopOf="@id/order_image" />
+        <!-- Date -->
+        <TextView
+            android:id="@+id/order_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Order Date"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_title"
+            app:layout_constraintTop_toBottomOf="@id/order_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"/>
 
-    <TextView
-        android:id="@+id/order_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Order Date"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_title"
-        app:layout_constraintTop_toBottomOf="@id/order_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"/>
+        <!-- Review -->
+        <EditText
+            android:id="@+id/orderReview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Order Review"
+            android:hint="Enter your review here :)"
+            android:textColorHint="@color/black"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_title"
+            app:layout_constraintTop_toBottomOf="@id/order_date"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Review -->
-    <EditText
-        android:id="@+id/orderReview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Order Review"
-        android:hint="Enter your review here :)"
-        android:textColorHint="@color/black"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_title"
-        app:layout_constraintTop_toBottomOf="@id/order_date"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Quantity Label -->
+        <TextView
+            android:id="@+id/order_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_title"
+            app:layout_constraintTop_toBottomOf="@id/orderReview" />
 
-    <!-- Quantity Label -->
+        <!-- Quantity Value -->
+        <TextView
+            android:id="@+id/item_quantity_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="OOO"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/order_quantity"
+            app:layout_constraintTop_toTopOf="@id/order_quantity" />
 
-    <Button
-        android:id="@+id/saveReviewBtn"
-        android:layout_width="127dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="48dp"
-        android:text="Save Review"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/item_quantity_value" />
+        <!-- Price Label -->
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_quantity"
+            app:layout_constraintTop_toBottomOf="@id/order_quantity" />
 
-    <TextView
-        android:id="@+id/order_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quantity:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_title"
-        app:layout_constraintTop_toBottomOf="@id/orderReview" />
+        <!-- Price Value -->
+        <TextView
+            android:id="@+id/item_price_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:text="OOO"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/item_price"
+            app:layout_constraintTop_toTopOf="@id/item_price" />
 
-    <!-- Quantity Value -->
+        <!-- Save Review Button -->
+        <Button
+            android:id="@+id/saveReviewBtn"
+            android:layout_width="127dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="40dp"
+            android:text="Save Review"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_quantity_value" />
 
-    <!-- Price Label -->
-    <TextView
-        android:id="@+id/item_quantity_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="OOO"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/order_quantity"
-        app:layout_constraintTop_toTopOf="@id/order_quantity" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/item_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_quantity"
-        app:layout_constraintTop_toBottomOf="@id/order_quantity" />
-
-    <!-- Price Value -->
-    <TextView
-        android:id="@+id/item_price_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:text="OOO"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/item_price"
-        app:layout_constraintTop_toTopOf="@id/item_price" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
