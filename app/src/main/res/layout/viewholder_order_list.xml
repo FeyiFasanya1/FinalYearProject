@@ -1,89 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/order_list_item"
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_list_card"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
 
-    <TextView
-        android:id="@+id/order_date"
-        android:layout_width="74dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
-        android:text="Order Date:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/order_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/order_status"
-        android:layout_width="87dp"
-        android:layout_height="33dp"
-        android:text="Order status:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_date"
-        app:layout_constraintTop_toBottomOf="@id/order_date" />
+        <TextView
+            android:id="@+id/order_date"
+            android:layout_width="74dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:text="Order Date:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/order_price"
-        android:layout_width="81dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:text="Total price:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_status"
-        app:layout_constraintTop_toBottomOf="@id/order_status" />
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_width="87dp"
+            android:layout_height="33dp"
+            android:text="Order status:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_date"
+            app:layout_constraintTop_toBottomOf="@id/order_date" />
 
-    <TextView
-        android:id="@+id/order_date_value"
-        android:layout_width="81dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="26dp"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/order_date"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/order_price"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="Total price:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_status"
+            app:layout_constraintTop_toBottomOf="@id/order_status" />
 
-    <TextView
-        android:id="@+id/order_price_value"
-        android:layout_width="78dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="12dp"
-        android:text="€"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="@+id/order_price"
-        app:layout_constraintStart_toEndOf="@+id/order_price" />
+        <TextView
+            android:id="@+id/order_date_value"
+            android:layout_width="81dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="26dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/order_date"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/order_status_value"
-        android:layout_width="159dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="8dp"
-        android:text="ORDER PROCESSED"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/order_status"
-        app:layout_constraintTop_toTopOf="@+id/order_status" />
+        <TextView
+            android:id="@+id/order_price_value"
+            android:layout_width="78dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="12dp"
+            android:text="€"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/order_price"
+            app:layout_constraintStart_toEndOf="@+id/order_price" />
 
-    <Spinner
-        android:id="@+id/order_status_spinner"
-        android:layout_width="159dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="8dp"
-        android:text="ORDER PROCESSED"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/order_status"
-        app:layout_constraintTop_toTopOf="@+id/order_status" />
+        <TextView
+            android:id="@+id/order_status_value"
+            android:layout_width="159dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:text="ORDER PROCESSED"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/order_status"
+            app:layout_constraintTop_toTopOf="@+id/order_status" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Spinner
+            android:id="@+id/order_status_spinner"
+            android:layout_width="159dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:text="ORDER PROCESSED"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/order_status"
+            app:layout_constraintTop_toTopOf="@+id/order_status" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

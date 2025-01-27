@@ -44,7 +44,8 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/order_title"
         app:layout_constraintTop_toBottomOf="@id/order_title"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"/>
 
     <!-- Review -->
     <EditText
@@ -52,6 +53,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Order Review"
+        android:hint="Enter your review here :)"
+        android:textColorHint="@color/black"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/order_title"
