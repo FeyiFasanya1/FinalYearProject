@@ -54,9 +54,9 @@ public class DetailActivity extends BaseActivity {
 
     private void initSize() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("SMALL");
-        list.add("MEDIUM");
-        list.add("LARGE");
+        list.add("small");
+        list.add("medium");
+        list.add("large");
 
         QuantityDomain quantity = object.getQuantity();
         binding.recyclerSize.setAdapter(new SizeAdapter(list, quantity, size -> selectedSize = size));
@@ -91,9 +91,13 @@ public class DetailActivity extends BaseActivity {
 
             DatabaseReference itemRef = FirebaseDatabase.getInstance().getReference("Items")
                     .child(object.getProductId()).child("quantity").child(selectedSize);
+            Log.d("Item ", object.getProductId() );
+            Log.d("Selected size ", selectedSize);
+
 
             itemRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
+                    Log.d("Task", task.toString());
                     int currentStock = task.getResult().getValue(Integer.class);
                     if (currentStock > 0) {
                         object.setNumberinCart(numberOrder);

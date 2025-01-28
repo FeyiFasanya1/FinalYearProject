@@ -37,8 +37,8 @@
 
     public class CartActivity extends BaseActivity {
 
-        static final String PAYMENT_URL = "https://lara-landing-page.verve.app/api/create-checkout-session?";
-        static final String EMAIL_URL = "https://lara-landing-page.verve.app/api/send-email-confirmation?";
+        static final String PAYMENT_URL = "https://lara-landing-page.vercel.app/api/create-checkout-session?";
+        static final String EMAIL_URL = "https://lara-landing-page.vercel.app/api/send-email-confirmation?";
 
         PaymentSheet paymentSheet;
         private String paymentClientSecret;

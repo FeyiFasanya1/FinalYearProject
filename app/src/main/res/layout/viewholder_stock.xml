@@ -1,158 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="0dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
 
-    <!-- Image for the item -->
-    <ImageView
-        android:id="@+id/order_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Title of the item -->
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="279dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/order_image"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="0dp">
 
-    <!-- Label for Quantity -->
-    <TextView
-        android:id="@+id/order_quantity"
-        android:layout_width="74dp"
-        android:layout_height="19dp"
-        android:text="Quantity:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/item_title"
-        app:layout_constraintTop_toBottomOf="@+id/item_title" />
+        <!-- Image for the item -->
+        <ImageView
+            android:id="@+id/order_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TextInputLayout for Quantity 1 -->
-    <TextView
-        android:id="@+id/order_size"
-        android:layout_width="74dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="24dp"
-        android:text="L, M, S"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/item_title"
-        app:layout_constraintTop_toBottomOf="@+id/item_title" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/quantityLayout"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/order_quantity"
-        app:layout_constraintTop_toTopOf="@id/order_quantity"
-        android:layout_marginStart="8dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_quantity_value"
-            android:layout_width="match_parent"
+        <!-- Title of the item -->
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="279dp"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:inputType="number"
+            android:layout_marginStart="16dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/order_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TextInputLayout for Quantity 2 -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/quantityLayout2"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/quantityLayout"
-        app:layout_constraintTop_toTopOf="@id/quantityLayout"
-        android:layout_marginStart="8dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- Label for Quantity -->
+        <TextView
+            android:id="@+id/order_quantity"
+            android:layout_width="74dp"
+            android:layout_height="19dp"
+            android:text="Quantity:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/item_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_quantity_value_2"
-            android:layout_width="match_parent"
+        <!-- TextInputLayout for Quantity 1 -->
+        <TextView
+            android:id="@+id/order_size"
+            android:layout_width="74dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="24dp"
+            android:text="L, M, S"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/item_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_title" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quantityLayout"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintStart_toEndOf="@id/order_quantity"
+            app:layout_constraintTop_toTopOf="@id/order_quantity"
+            android:layout_marginStart="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <!-- TextInputLayout for Quantity 3 -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/quantityLayout3"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/quantityLayout2"
-        app:layout_constraintTop_toTopOf="@id/quantityLayout"
-        android:layout_marginStart="8dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_quantity_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_quantity_value_3"
-            android:layout_width="match_parent"
+        <!-- TextInputLayout for Quantity 2 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quantityLayout2"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintStart_toEndOf="@id/quantityLayout"
+            app:layout_constraintTop_toTopOf="@id/quantityLayout"
+            android:layout_marginStart="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <!-- Label for Price -->
-    <TextView
-        android:id="@+id/item_price"
-        android:layout_width="75dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="16dp"
-        android:text="Price:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/order_quantity"
-        app:layout_constraintTop_toBottomOf="@+id/quantityLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_quantity_value_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- TextInputLayout for Price -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/priceLayout"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@id/item_price"
-        app:layout_constraintTop_toTopOf="@id/item_price"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_price_value"
-            android:layout_width="match_parent"
+        <!-- TextInputLayout for Quantity 3 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quantityLayout3"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
+            app:layout_constraintStart_toEndOf="@id/quantityLayout2"
+            app:layout_constraintTop_toTopOf="@id/quantityLayout"
+            android:layout_marginStart="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_quantity_value_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Label for Price -->
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="75dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="16dp"
+            android:text="Price:"
             android:textColor="@color/black"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/quantityLayout" />
 
-    <!-- Update button -->
-    <Button
-        android:id="@+id/updateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:padding="8dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Update"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/priceLayout"
-        app:layout_constraintTop_toTopOf="@+id/priceLayout" />
+        <!-- TextInputLayout for Price -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/priceLayout"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/item_price"
+            app:layout_constraintTop_toTopOf="@id/item_price"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_price_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Update button -->
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/priceLayout"
+            app:layout_constraintTop_toTopOf="@+id/priceLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

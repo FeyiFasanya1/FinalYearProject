@@ -44,9 +44,9 @@
             // Display quantity for each size in corresponding fields
             QuantityDomain quantity = currentItem.getQuantity();
             if (quantity != null) {
-                holder.binding.itemQuantityValue.setText(String.valueOf(quantity.getLARGE()));
-                holder.binding.itemQuantityValue2.setText(String.valueOf(quantity.getMEDIUM()));
-                holder.binding.itemQuantityValue3.setText(String.valueOf(quantity.getSMALL()));
+                holder.binding.itemQuantityValue.setText(String.valueOf(quantity.getLarge()));
+                holder.binding.itemQuantityValue2.setText(String.valueOf(quantity.getMedium()));
+                holder.binding.itemQuantityValue3.setText(String.valueOf(quantity.getSmall()));
             }
 
             // Load the image using Glide if available

@@ -4,67 +4,67 @@
 
     public class QuantityDomain implements Serializable {
 
-        private int SMALL;
-        private int MEDIUM;
-        private int LARGE;
+        private int small;
+        private int medium;
+        private int large;
 
         public QuantityDomain() {
         }
 
         public QuantityDomain(int small, int medium, int large) {
-            this.SMALL = small;
-            this.MEDIUM = medium;
-            this.LARGE = large;
+            this.small = small;
+            this.medium = medium;
+            this.large = large;
         }
 
-        public int getSMALL() {
-            return SMALL;
+        public int getSmall() {
+            return small;
         }
 
-        public void setSMALL(int SMALL) {
-            this.SMALL = SMALL;
+        public void setSmall(int small) {
+            this.small = small;
         }
 
-        public int getMEDIUM() {
-            return MEDIUM;
+        public int getMedium() {
+            return medium;
         }
 
-        public void setMEDIUM(int MEDIUM) {
-            this.MEDIUM = MEDIUM;
+        public void setMedium(int medium) {
+            this.medium = medium;
         }
 
-        public int getLARGE() {
-            return LARGE;
+        public int getLarge() {
+            return large;
         }
 
-        public void setLARGE(int LARGE) {
-            this.LARGE = LARGE;
+        public void setLarge(int large) {
+            this.large = large;
         }
 
         public int getQuantityForSize(String size) {
             if (size.equalsIgnoreCase("large")) {
-                return LARGE;
+                return large;
             }
             if (size.equalsIgnoreCase("medium")) {
-                return MEDIUM;
+                return medium;
             }
             if (size.equalsIgnoreCase("small")) {
-                return SMALL;
+                return small;
             }
 
             return 0;
         }
 
         public int getTotalQuantity() {
-            return LARGE + MEDIUM + SMALL;
+            return large + medium + small;
         }
 
         @Override
         public String toString() {
             return "QuantityDomain{" +
-                    "SMALL='" + SMALL + '\'' +
-                    ", LARGE='" + LARGE + '\'' +
-                    ", MEDIUM=" + MEDIUM + "}";
+                    "small='" + small + '\'' +
+                    ", large='" + large + '\'' +
+                    ", medium=" + medium + "}";
         }
     }
 

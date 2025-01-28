@@ -36,7 +36,7 @@
                 listfood.add(item);
             }
 
-            Log.e("Item Added", item.getTitle() + ", " + item.getQuantity().getSMALL());
+            Log.e("Item Added", item.getTitle() + ", " + item.getQuantity().getSmall());
             tinyDB.putListObject("CartList", listfood);
             Toast.makeText(context, "Added to your Cart", Toast.LENGTH_SHORT).show();
         }
@@ -71,6 +71,7 @@
             tinyDB.putListObject("CartList", listfood);
             changeNumberItemsListener.changed();
         }
+
 
         public Double getTotalFee() {
             ArrayList<ItemsDomain> listfood2 = getListCart();

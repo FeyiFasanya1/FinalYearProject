@@ -101,7 +101,7 @@
         }
 
         public boolean isInStock() {
-            return quantity.getLARGE() >0 && quantity.getMEDIUM() >0 && quantity.getSMALL() >0;
+            return quantity.getLarge() >0 && quantity.getMedium() >0 && quantity.getSmall() >0;
         }
 
         public void setNumberinCart(int NumberinCart) {

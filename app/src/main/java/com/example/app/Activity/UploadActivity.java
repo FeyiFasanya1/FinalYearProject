@@ -36,6 +36,7 @@
     import java.util.Calendar;
     import java.util.HashMap;
     import java.util.Map;
+    import java.util.UUID;
 
     public class UploadActivity extends AppCompatActivity {
 
@@ -125,7 +126,7 @@
             String title = binding.uploadTitle.getText().toString();
             String desc = binding.uploadDesc.getText().toString();
             String price = binding.uploadPrice.getText().toString();
-            String productId = binding.uploadProductId.getText().toString();
+            String productId = UUID.randomUUID().toString();
             String categoryId = binding.uploadCategoryId.getText().toString();
 
 
@@ -135,9 +136,9 @@
 
             // Create the quantity map with uppercase keys
             Map<String, Integer> quantities = new HashMap<>();
-            quantities.put("SMALL", smallQty);
-            quantities.put("MEDIUM", mediumQty);
-            quantities.put("LARGE", largeQty);
+            quantities.put("small", smallQty);
+            quantities.put("medium", mediumQty);
+            quantities.put("large", largeQty);
 
 
             if (title.isEmpty() || desc.isEmpty() || price.isEmpty() || productId.isEmpty() || categoryId.isEmpty()) {
@@ -180,10 +181,9 @@
                         DataSnapshot snapshot = task.getResult();
 
                         // Determine the next key
-                        long nextKey = snapshot.exists() ? snapshot.getChildrenCount() + 1 : 1;
 
                         // Save the item in Firebase with the next key
-                        database.getReference("Items").child(String.valueOf(nextKey))
+                        database.getReference("Items").child(productId)
                                 .setValue(item)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
